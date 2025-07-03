@@ -1,0 +1,118 @@
+# Categories (Commands)
+CATEGORIES = ["left", "right"]  # commands
+output_dir = "/content/drive/MyDrive/audio2025/audios/gravados"  # main output directory
+os.makedirs(output_dir, exist_ok=True)
+
+# Function to record audio and return the WAV data 
+def recording_audio(command, duration):
+    audio_html = """
+    <script>
+    var base64data = 0;
+    var reader;
+    var recorder, gumStream;
+
+    function startRecording() {
+      navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
+        gumStream = stream;
+        var options = {
+          mimeType: 'audio/webm;codecs=opus'
+        };
+        recorder = new MediaRecorder(stream, options);
+        recorder.ondataavailable = function(e) {
+          var url = URL.createObjectURL(e.data);
+          var preview = document.createElement('audio');
+          preview.controls = true;
+          preview.src = url;
+          document.body.appendChild(preview);
+
+          reader = new FileReader();
+          reader.readAsDataURL(e.data);
+          reader.onload = function() {
+            base64data = reader.result;
+          }
+        };
+        recorder.start();
+        setTimeout(function() {
+          if (recorder && recorder.state == "recording") {
+            recorder.stop();
+            gumStream.getAudioTracks()[0].stop();
+          }
+        }, %d);
+      });
+    }
+
+    var data = new Promise(resolve => {
+      var checkData = () => {
+        if (base64data) {
+          resolve(base64data.toString());
+        } else {
+          setTimeout(checkData, 100);
+        }
+      };
+      checkData();
+    });
+
+    startRecording();
+    </script>
+    """ % (duration * 1000)
+
+    display(HTML(audio_html))
+
+    data = output.eval_js("data")
+    binary = b64decode(data.split(',')[1])
+
+    # Save the audio to a temporary file
+    temp_file = 'temp.webm'
+    with open(temp_file, 'wb') as f:
+        f.write(binary)
+
+    # Convert audio to WAV using FFmpeg
+    output_file = 'output.wav'
+    cmd = ['ffmpeg', '-i', temp_file, '-y', '-vn', '-acodec', 'pcm_s16le', '-ar', '44100', '-ac', '2', output_file]
+    subprocess.run(cmd, stderr=subprocess.PIPE)
+
+    # Reading WAV File Data
+    with open(output_file, 'rb') as f:
+        wav_data = f.read()
+
+    # Remove temporary files
+    os.remove(temp_file)
+    os.remove(output_file)
+
+    return wav_data
+
+def get_next_recording_number(path):
+
+  numero_arquivos = 0
+  for arquivo in os.listdir(path):
+    numero_arquivos += 1
+
+  return numero_arquivos+1
+
+# function to process audio files and save them in their respective folders
+def record_and_save():
+    clear_output()
+    for command in CATEGORIES:
+
+        # Create a category folder if it doesn't exist,
+        category_dir = os.path.join(output_dir, command)
+        os.makedirs(category_dir, exist_ok=True)
+
+        # Get the next recording number
+        next_number = get_next_recording_number(category_dir)
+
+        # Generate the next available WAV filename with automatic numbering
+        file_name = os.path.join(category_dir, f"{command}-{next_number:02}.wav")
+
+        # Record audio and automatically save
+        print(f"Recording audio to {command}-{next_number}")
+        audio_data = recording_audio(command, duration=3)
+        with open(file_name, 'wb') as f:
+            f.write(audio_data)
+        print(f"Save audio to {command}")
+        if command == CATEGORIES[-1]:
+          display(button)
+# Function to start recording with a button 
+button = widgets.Button(description="Iniciar gravações")
+button.on_click(lambda x: record_and_save())
+display(button)
