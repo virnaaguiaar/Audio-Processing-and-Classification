@@ -22,17 +22,20 @@ Primeiramente é necessário criar um mecanismo de gravação de áudio caso voc
 
     %cd /content/drive/MyDrive/audio2025/audios
 
-Para a pasta de áudios gravados:
+
+    - Para a pasta de áudios gravados:
 
     output_dir = "/content/drive/MyDrive/audio2025/audios/gravados"  
     os.makedirs(output_dir, exist_ok=True)
 
-Para a pasta dos espectogramas gerados através do processamento do áudio:
+
+    - Para a pasta dos espectogramas gerados através do processamento do áudio:
 
     espectrograma_dir = "/content/drive/MyDrive/audio2025/audios/espectrogramas"
 
-Para salvar o modelo:
 
+    - Para salvar o modelo:
+    
     with open('/content/drive/MyDrive/audio2025/audios/model.tflite', 'wb') as f:
       f.write(tflite_model)
 
