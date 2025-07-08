@@ -1,4 +1,4 @@
-# Audio-Processing-and-Classification
+# Audio Processing and Classification
 
 Este é um projeto de processamento e classificacao de audio que também tem o objetio de ser uma exposição de como funciona uma rede neural convolucional.
 
