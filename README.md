@@ -7,14 +7,14 @@ O projeto é dividido em quatro partes que serão expostas nesse readme.
 ## Gravação
 Primeiramente é necessário criar um mecanismo de gravação de áudio caso você ainda nao tenha os arquivos de áudio. Utilizei para esse mecanismo o googleColaboratoy que faz a ponte direta com o googleDrive para salvar os aquivos em pastas específicas.
 
-    #from google.colab import drive
+    from google.colab import drive
     drive.mount('/content/drive')
 
     %cd /content/drive/MyDrive/audio2025/audios
 
 Para a pasta de áudios gravados:
 
-    output_dir = "/content/drive/MyDrive/audio2025/audios/gravados"  # Diretório principal de saída
+    output_dir = "/content/drive/MyDrive/audio2025/audios/gravados"  
     os.makedirs(output_dir, exist_ok=True)
 
 Para a pasta dos espectogramas gerados através do processamento do áudio:
@@ -31,42 +31,9 @@ Para salvar o modelo:
     modelo = tf.keras.models.load_model('/content/drive/MyDrive/audio2025/audios/modelo.keras')
 
 
-
-
-    
-    
-    # Categories (Commands)
-
-    # commands
-
-    # main output directory
-
-    # Function to record audio and return the WAV data
-
-    # Save the audio to a temporary file
-
-    # Convert audio to WAV using FFmpeg
-
-    # Reading WAV File Data
-
-    # Remove temporary files
-
-    # function to process audio files and save them in their respective folders
-
-    # Create a category folder if it doesn't exist,
-
-    # Get the next recording number
-
-    # Generate the next available WAV filename with automatic numbering
-
-    # Record audio and automatically save
-
-    # Function to start recording with a button
-
-Explicação simples:
 O código é um sistema de gravação de áudio que:
 
-    Organiza os áudios em categorias (como "left" e "right")
+    *Organiza os áudios em categorias (como "left" e "right")*
 
     Cria uma pasta principal para armazenar os arquivos
 
