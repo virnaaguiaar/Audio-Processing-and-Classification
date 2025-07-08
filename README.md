@@ -45,10 +45,13 @@ Primeiramente é necessário criar um mecanismo de gravação de áudio caso voc
 
 ## Spectograma
 Este código realiza o pré-processamento de áudios e gera espectrogramas. 
+
 Espectogramas são representações visuais de frequências ao longo do tempo, onde:
+
     - Eixo X: Tempo;
     - Eixo Y: frequência (escala logarítmica);
     - Cores: Intensidade (dB).
+    
 Leitura com OpenCV (cv2.imread()): converte a imagem em um array NumPy para processamento posterior (ex.: redes neurais).
 
 - Monta o Google Drive para acessar arquivos;
