@@ -78,6 +78,7 @@ Espectogramas são representações visuais de frequências ao longo do tempo.
     Aplica o filtro duas vezes (ida e volta) para evitar atraso de fase (distorção temporal).
 
 ### → Pré-Processamento de Áudio (Librosa)
+ #### Operações principais:
  - librosa.stft() (Short-Time Fourier Transform)
 
     - Divide o sinal em pequenos segmentos e calcula a Transformada de Fourier para cada um.
