@@ -4,7 +4,7 @@ Este é um projeto de processamento e classificacao de audio que também tem o o
 
 O projeto é dividido em quatro partes que serão expostas nesse readme. Cada parte do código está marcada com comentários que explicam sua função.
 
-## 🎙️ Gravação 🎙️
+## 🎙️ Gravação 
 
 O código é um sistema de gravação de áudio que:
 - Organiza os áudios em categorias (como "left" e "right");
@@ -43,7 +43,7 @@ Primeiramente é necessário criar um mecanismo de gravação de áudio caso voc
 
     modelo = tf.keras.models.load_model('/content/drive/MyDrive/audio2025/audios/modelo.keras')
 
-##  📊 Spectograma  📊 
+##  📊 Spectograma  
 Este código realiza o pré-processamento de áudios e gera espectrogramas. 
 
 Espectogramas são representações visuais de frequências ao longo do tempo, onde:
