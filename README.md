@@ -46,17 +46,29 @@ Primeiramente é necessário criar um mecanismo de gravação de áudio caso voc
 ## Spectograma
 Este código realiza o pré-processamento de áudios e gera espectrogramas. 
 Espectogramas são representações visuais de frequências ao longo do tempo.
-    Monta o Google Drive para acessar arquivos.
 
-    Instala e importa bibliotecas necessárias (librosa, OpenCV, matplotlib, scipy).
+- Monta o Google Drive para acessar arquivos;
+- Instala e importa bibliotecas necessárias (librosa, OpenCV, matplotlib, scipy);
+- Aplica um filtro passa-banda para isolar frequências entre 100 Hz e 10.000 Hz, removendo ruídos indesejados, usados também para remover silêncios do início e fim do áudio;
+- Converte o áudio em espectrogramas;
+- Salva os espectrogramas em pastas separadas pelas categoria desejadas;
+- Armazena os espectrogramas e seus rótulos em listas para uso futuro.
 
-    Aplica um filtro passa-banda para isolar frequências entre 100 Hz e 10.000 Hz, removendo ruídos indesejados.
+    ### Filtragem de Sinais (Filtro Passa-Banda)
+    O que é?
+        Um filtro passa-banda permite a passagem de frequências dentro de uma faixa específica (entre fcorte_inf e fcorte_sup), enquanto atenua frequências fora dessa faixa.
+    - Remove ruídos e frequências indesejadas (ex.: 50/60 Hz de interferência elétrica).
+    - Melhora a qualidade do áudio antes da análise espectral.
 
-    Remove silêncios do início e fim do áudio.
+    Como funciona no código?
 
-    Converte o áudio em espectrogramas (imagens que mostram as variações de frequência ao longo do tempo).
+    - butter() (da biblioteca scipy.signal):
+        -Projeta um filtro Butterworth (resposta suave na banda de passagem).
+        -Parâmetros:
+      
+            order=5 → Quanto maior a ordem, mais "íngreme" é a filtragem.
+            btype='band' → Define um filtro passa-banda.
+            Frequências normalizadas (inf_normalz, sup_normalz) para evitar aliasing.
 
-    Salva os espectrogramas em pastas separadas por categoria (left e right).
-
-    Armazena os espectrogramas e seus rótulos em listas para uso futuro.
-
+    - filtfilt():
+        Aplica o filtro duas vezes (ida e volta) para evitar atraso de fase (distorção temporal).
