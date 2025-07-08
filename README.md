@@ -54,21 +54,22 @@ Espectogramas são representações visuais de frequências ao longo do tempo.
 - Salva os espectrogramas em pastas separadas pelas categoria desejadas;
 - Armazena os espectrogramas e seus rótulos em listas para uso futuro.
 
-    ### Filtragem de Sinais (Filtro Passa-Banda)
-    O que é?
-        Um filtro passa-banda permite a passagem de frequências dentro de uma faixa específica (entre fcorte_inf e fcorte_sup), enquanto atenua frequências fora dessa faixa.
-    - Remove ruídos e frequências indesejadas (ex.: 50/60 Hz de interferência elétrica).
-    - Melhora a qualidade do áudio antes da análise espectral.
+  ### Filtragem de Sinais (Filtro Passa-Banda)
+O que é?
 
-    Como funciona no código?
+Um filtro passa-banda permite a passagem de frequências dentro de uma faixa específica (entre fcorte_inf e fcorte_sup), enquanto atenua frequências fora dessa faixa.
+- Remove ruídos e frequências indesejadas (ex.: 50/60 Hz de interferência elétrica).
+- Melhora a qualidade do áudio antes da análise espectral.
 
-    - butter() (da biblioteca scipy.signal):
-        -Projeta um filtro Butterworth (resposta suave na banda de passagem).
-        -Parâmetros:
-      
-            order=5 → Quanto maior a ordem, mais "íngreme" é a filtragem.
-            btype='band' → Define um filtro passa-banda.
-            Frequências normalizadas (inf_normalz, sup_normalz) para evitar aliasing.
+Como funciona no código?
 
-    - filtfilt():
-        Aplica o filtro duas vezes (ida e volta) para evitar atraso de fase (distorção temporal).
+- butter() (da biblioteca scipy.signal):
+    -Projeta um filtro Butterworth (resposta suave na banda de passagem).
+    -Parâmetros:
+  
+        order=5 → Quanto maior a ordem, mais "íngreme" é a filtragem.
+        btype='band' → Define um filtro passa-banda.
+        Frequências normalizadas (inf_normalz, sup_normalz) para evitar aliasing.
+
+- filtfilt():
+    Aplica o filtro duas vezes (ida e volta) para evitar atraso de fase (distorção temporal).
