@@ -4,12 +4,6 @@ Este é um projeto de processamento e classificacao de audio que também tem o o
 
 O projeto é dividido em quatro partes que serão expostas nesse readme. Cada parte do código está marcada com comentários que explicam sua função.
 
-Pré-requisito para Machine Learning:
-
-- Dados devem estar em formato numérico (imagens como arrays)
-
-- Rótulos devem ser codificados (ex.: 0, 1)
-
 ## Gravação
 
 O código é um sistema de gravação de áudio que:
@@ -57,8 +51,7 @@ Espectogramas são representações visuais de frequências ao longo do tempo, o
 - Eixo X: Tempo;
 - Eixo Y: frequência (escala logarítmica);
 - Cores: Intensidade (dB).
-    
-Leitura com OpenCV (cv2.imread()): converte a imagem em um array NumPy para processamento posterior (ex.: redes neurais).
+
 
 O códio desta seção:
 - Monta o Google Drive para acessar arquivos;
@@ -107,3 +100,25 @@ O códio desta seção:
     - O ouvido humano percebe sons em escala logarítmica.
 
     - Melhora o contraste em espectrogramas.
+
+
+### → Tópicos Extra
+
+- Taxa de Amostragem (sr) e Nyquist
+    Teorema de Nyquist:
+    - Para reconstruir um sinal, a taxa de amostragem deve ser pelo menos o dobro da frequência máxima presente no sinal.
+    Ex.: Se sr=44100 Hz, a maior frequência detectável é 22050 Hz.
+
+- Normalização de Frequências:
+    Antes de aplicar o filtro, as frequências são normalizadas pela frequência de Nyquist para evitar distorções no filtro digital.
+
+- Pré-requisito para Machine Learning:
+  
+    - Dados devem estar em formato numérico (imagens como arrays)
+    - Rótulos devem ser codificados (ex.: 0, 1)
+
+- Leitura com OpenCV (cv2.imread()):
+
+  - Converte a imagem em um array NumPy para processamento posterior (ex.: redes neurais);
+  - Permite pós-processamento de imagens (redimensionamento, equalização de histograma);
+  - Compatível com frameworks de deep learning (ex.: TensorFlow, PyTorch).
