@@ -76,3 +76,19 @@ Espectogramas são representações visuais de frequências ao longo do tempo.
 - filtfilt():
   
     Aplica o filtro duas vezes (ida e volta) para evitar atraso de fase (distorção temporal).
+
+### → Pré-Processamento de Áudio (Librosa)
+ - librosa.stft() (Short-Time Fourier Transform)
+
+    - Divide o sinal em pequenos segmentos e calcula a Transformada de Fourier para cada um.
+
+    - Saída: Matriz complexa representando magnitudes e fases em diferentes frequências ao longo do tempo.
+
+- librosa.amplitude_to_db()
+
+    - Converte amplitudes em decibéis (dB) (escala logarítmica).
+
+    Motivação:
+    - O ouvido humano percebe sons em escala logarítmica.
+
+    - Melhora o contraste em espectrogramas.
