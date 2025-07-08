@@ -48,12 +48,13 @@ Este código realiza o pré-processamento de áudios e gera espectrogramas.
 
 Espectogramas são representações visuais de frequências ao longo do tempo, onde:
 
-    - Eixo X: Tempo;
-    - Eixo Y: frequência (escala logarítmica);
-    - Cores: Intensidade (dB).
+- Eixo X: Tempo;
+- Eixo Y: frequência (escala logarítmica);
+- Cores: Intensidade (dB).
     
 Leitura com OpenCV (cv2.imread()): converte a imagem em um array NumPy para processamento posterior (ex.: redes neurais).
 
+O códio desta seção:
 - Monta o Google Drive para acessar arquivos;
 - Instala e importa bibliotecas necessárias (librosa, OpenCV, matplotlib, scipy);
 - Aplica um filtro passa-banda para isolar frequências entre 100 Hz e 10.000 Hz, removendo ruídos indesejados, usados também para remover silêncios do início e fim do áudio;
