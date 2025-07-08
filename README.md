@@ -4,6 +4,12 @@ Este é um projeto de processamento e classificacao de audio que também tem o o
 
 O projeto é dividido em quatro partes que serão expostas nesse readme. Cada parte do código está marcada com comentários que explicam sua função.
 
+Pré-requisito para Machine Learning:
+
+- Dados devem estar em formato numérico (imagens como arrays)
+
+- Rótulos devem ser codificados (ex.: 0, 1)
+
 ## Gravação
 
 O código é um sistema de gravação de áudio que:
