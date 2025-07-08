@@ -44,5 +44,19 @@ Primeiramente é necessário criar um mecanismo de gravação de áudio caso voc
     modelo = tf.keras.models.load_model('/content/drive/MyDrive/audio2025/audios/modelo.keras')
 
 ## Spectograma
+Este código realiza o pré-processamento de áudios e gera espectrogramas. 
+Espectogramas são representações visuais de frequências ao longo do tempo.
+    Monta o Google Drive para acessar arquivos.
 
+    Instala e importa bibliotecas necessárias (librosa, OpenCV, matplotlib, scipy).
+
+    Aplica um filtro passa-banda para isolar frequências entre 100 Hz e 10.000 Hz, removendo ruídos indesejados.
+
+    Remove silêncios do início e fim do áudio.
+
+    Converte o áudio em espectrogramas (imagens que mostram as variações de frequência ao longo do tempo).
+
+    Salva os espectrogramas em pastas separadas por categoria (left e right).
+
+    Armazena os espectrogramas e seus rótulos em listas para uso futuro.
 
