@@ -1,0 +1,268 @@
+# Garantir o uso da placa de vídeo
+!nvidia-smi
+
+##
+from google.colab import drive
+drive.mount('/content/drive')
+##
+!pip install --upgrade tensorflow keras
+
+##
+import tensorflow as tf
+print(tf.__version__)
+
+##
+#manipulação de diretórios e caminhos
+import os
+#exibir barra de progresso
+from tqdm import tqdm
+import numpy as np
+#OpenCV: processa imagem (ler/redimessionar)
+import cv2
+
+#caminhos
+treino_dir = '/content/drive/MyDrive/audio2025/audios/espectrogramas/treino'
+teste_dir = '/content/drive/MyDrive/audio2025/audios/espectrogramas/teste'
+validacao_dir = '/contetnt/drive/MyDrive/audio2025/audios/espectrogramas/validacao'
+
+DATADIR = [treino_dir, teste_dir, validacao_dir]
+CATEGORIES = ["right", "left"]
+
+#cria espaço
+treino_dado = []
+teste_dado = []
+validacao_dado = []
+
+for dir in DATADIR:
+  for category in CATEGORIES:
+    #diretório + classe = caminho completo
+    path = os.path.join(dir, category)
+    #índice da classe para dividir/discriminar
+    label = CATEGORIES.index(category)
+
+    #Percorrer todos os arquivos
+    for img_file in tqdm(os.listdir(path), desc=f'Carregando imagens de {category} - {DATADIR.index(dir)}', unit = 'imagem'):
+      #Carrega a imagem em escala de cinza
+      imagem = cv2.imread(os.path.join(path, image_file), 1)
+      #Redimesiona a imagem para 387x231 px
+      imagem = cv2.resize(imagem, (387, 231))
+
+      #Preencher as listas com os arquivos
+      if(dir == treino_dir):
+        treino_dado.append([imagem, label])
+      elif(dir == teste_dir):
+        teste_dado.append([imagem, label])
+      elif(dir == validacao_dir):
+        validacao_dado.append([imagem, label])
+
+##
+
+#Noção da divisão
+print(len(train_data))
+print(len(test_data))
+print(len(valid_data))
+
+##
+#Emabralhar todos os arquivos para evitar divisão enviesada (como ordem de entrada na pasta)
+import random
+random.shuffle(treino_dado)
+random.shuffle(teste_dado)
+random.shuffle(validacao_dado)
+
+##
+# /255: normalizar valores e melhorar desempenho / acelerar o treino e ter mais estabilidade numérica
+#imagens carregadas em escala de cinza: varia de [0,255]
+# Extrair apenas a imagem (espectrog.) uso de '_' para ignorar 'label' (lista = imagem + label)
+X_treino = np.array([spec for spec, _ in treino_dado]) / 255
+# Extrair apenas o rótulo (label.) uso de '_' para ignorar 'espectograma' (lista = imagem + label)
+y_treino = np.array([lab for _, lab in treino_dado])
+
+X_teste = np.array([spec for spec, _ in teste_dado]) / 255
+y_teste = np.array([lab for _, lab in teste_dado])
+X_validacao = np.array([spec for spec, _ in validacao_dado]) / 255
+y_validacao = np.array([lab for _, lab in validacao_dado])
+
+#'.shape': retorna as dimensões do array
+print('Shapes:')
+print('X_treino:', X_treino.shape)
+print('y_treino:', y_treino.shape)
+print('X_teste:', X_teste.shape)
+print('y_teste:', y_teste.shape)
+print('X_validacao:', X_validacao.shape)
+print('y_validacao:', y_validacao.shape)
+#Saída: X(n° de imagens, dimensões das imagens, 3=3 sinais de cor RedGreenBlue)
+#       y(n° de imagens, )
+
+##
+# Salva múltiplos arrays no arquivo compactado .npz
+np.savez('/content/drive/MyDrive/audio2025/audios/dados_teste_validacao.npz', X_treino=X_treino, y_teste=y_teste, X_validacao=X_validacao, y_validacao=y_validacao)
+
+
+
+##
+#keras: classificação de multiclasse / sequential: pilha linear de camadas, onde cada camada recebe a saída da camada anterior
+from tensorflow_keras import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, Input
+'''
+Conv2D: camada convolucional bidimensional, a principal camada
+
+MaxPooling2D: Camada de pooling, que reduz(/2) as dimensões da imagem (diminuindo a resolução) = diminuir a complexidade computacional/evitar overfitting
+
+Flatten: "achata" a entrada q é matriz multidimensional -> vetor de uma única dimensão / (antes de adicionar camadas densas
+
+Dense: Camada densa - cada neurônio está conectado a todos os neurônios da camada anterior
+
+Dropout(reguarização): Queima aleatoriamente alguns neurônios durante o treinamento (reduzir o overfitting)
+
+Input: Define a forma da entrada da rede (número de pixels da imagem e o número de canais de cor)'''
+
+#Definir forma: (altura, largura, 3 = 3 sinais de cor RedGreenBlue)
+input_shape = (231, 387, 3)
+
+model = Sequential()
+
+# Adicionar a camada de entrada (para o modelo saber a dimensão dos dados de entrada)
+model.add(Input(shape=input_shape))
+
+# ADICIONAR CAMADAS CONVOLUCIONAIS
+# ---Primeira camada (convolucional + pooling)
+# (32 filtros/kernels, tamanho do filtro, ativador comum: REtified Linear Unit)
+model.add(Conv2D(32, (3,3), activation='relu'))
+# Pega a região 2x2 de cada parte da imagem - escolhe o valor máximo dessa região - forma nova imagem reduzida
+model.add(MaxPooling2D((2,2)))
+
+#---Segunda camada (convolucional + pooling)
+model.add(Conv2D(64, (3, 3), activation='relu'))
+model.add(MaxPooling2D((2, 2)))
+
+#---Terceira camada (convolucional + pooling)
+model.add(Conv2D(128, (3, 3), activation='relu'))
+model.add(MaxPooling2D((2, 2)))
+
+# 'ACHATAR' 2D -> 1D
+model.add(Flatten())
+
+# ADICIONAR CAMADAS DENSAS
+#---Primeira camada densa + Dropout
+# Camada com 512 neurônios
+model.add(Dense(512, activation='relu'))
+# Desliga aleatoriamente 50% dos neurônios para evitar overfitting
+model.add(Dropout(0.5))
+
+#---Camada final (densa + Softmax)
+model.add(Dense(6, activation='softmax'))
+
+
+
+##
+# Analisar o desempenho do modelo em termos de falsos positivos e falsos negativos
+
+# Precisão: exemplos positivos corretamente classificados olhando os classificados positivos.
+# Precisão = (Verdadeiros Positivos) / (Verdadeiros Positivos + Falsos Positivos)
+# Sensibilidade: exemplos positivos corretamente classificados olhando os que realmente são positivos
+# Sensibilidade = (Verdadeiros Positivos) / (Verdadeiros Positivos + Falsos Negativos)
+
+from tensorflow.keras.metrics import Precision, Recall
+
+#Adam (Adaptive Moment Estimation): ajusta as taxas de aprendizado para cada parâmetro da rede, melhorando a eficiência e estabilidade do treinamento
+# Sparse...: Função de perda utilizada em classificação multiclasse. Com (labels) são números inteiros (em vez de vetores one-hot)
+# from_logits=False: indica que a saída da rede neural (logits) já é normalizada pelo softmax. // =True: indica que a rede retorna logits não normalizados // Keras irá aplicar a softmax automaticamente
+# Keras monitorar a porcentagem de previsões corretas do modelo
+model.compile(optimizar='adam',
+              loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False),
+              metrics=['accuracy'])
+
+
+##
+# Visão geral de todas as camadas do seu modelo, seus parâmetros, formas de saída e o número total de parâmetros treináveis e não treináveis
+model.summary()  aquiiiiiiiiiiiiiii
+
+
+##
+# Treinar o modelo em Keras
+# (dados de entrada pra aprender, rótulos de cada classe, treinar 10 vezes, dar acurácia ou a perda à cada treino/época)
+historico = model.fit(X_treino, y_treino, epochs=10, validacao_dado=(X_validacao, y_validacao))
+
+
+##
+# classification_report: resumo completo das principais métricas de desempenho de um modelo de classificação - precisão, recall, F1-score, acurácia, para cada classe
+# confusion_matrix: cria uma matriz de confusão - comparação entre as previsões do modelo e os rótulos reais (cada célula da matriz: número de ocorrências de cada combinação de rótulos previstos e reais)
+# accuracy_score: (previsões corretas)/(total)
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+
+
+
+##
+# Usa os dados testes para prever a saída
+predictions = model.predict(X_teste)
+
+
+##
+# Mostrar(relatório detalhado(rótulo, retorna cada rótulo da na classe com a maior probabilidade))
+print(classification_report(y_teste, predictions.argmax(axis=1)))
+
+
+##
+# Biblioteca para gráfico mais compexo (heatmap)
+import seaborn as sns
+import matplotlib.pyplot as plt
+# Calcular a matrix de convolução(rótulos, previsões)
+cm = confusion_matrix(y_teste, predictions.argmax(axis=1))
+
+# Tamanho da figura (8x6 polegadas)
+plt.figure(figsize=(8, 6))
+#mapa de calor(matriz, adicionar os valores direto no mapa, tons de azul, decimal, eixos com as classes)
+sns.heatmap(cm, annot=True, cmap='Blues', fmt='d', xticklabels=CATEGORIES, yticklabels=CATEGORIES)
+plt.xlabel('Previsão')
+plt.ylabel('Real')
+plt.title('Matriz de confusão')
+plt.savefig('/content/drive/MyDrive/audio2025/audios/confusion_matrix.png')
+plt.show()
+
+
+
+##
+# Histórico de treinamento: acompanhar como acurácia e perda evoluíram ao longo das épocas
+print(historico.history.keys())
+print(historico.history['acuracy'])
+print(historico.history['loss'])
+
+
+##
+# Gráfico de acurácia
+plt.plot(history.history['accuracy'])
+plt.title('Modelo de acurácia')
+plt.ylabel('Acurácia')
+plt.xlabel('Época')
+plt.savefig('/content/drive/MyDrive/audio2025/audios/accuracy.png')
+
+
+##
+# Gráfico de perda
+plt.plot(history.history['loss'])
+plt.title('Modelo de perda')
+plt.ylabel('Perda')
+plt.xlabel('Época')
+plt.savefig('/content/drive/MyDrive/audio2025/audios/loss.png')
+plt.show()
+
+
+##
+import pandas as pd
+# Acessa as métricas
+metricas = historico.history
+# Cria DataFrame com as métricas: uma tabela - coluna: métrica / linha: época
+metricas_df = pd.DataFrame(metricas)
+# to_csv(): converte o DataFrame metricas_df p-> arquivo CSV      //index=False: sem índice
+metricas_df.to_csv('/content/drive/MyDrive/audio2025/audios/metrics_manualv2.csv', index=False)
+
+
+
+##
+# Converte o modelo treinado de TensorFlow/Keras -> TensorFlow Lite (TFLite)
+converter = tf.lite.TFLiteConverter.from_keras_model(modelo)
+tflite_model = converter.convert()
+
+# Salvar o modelo
+with open('/content/drive/MyDrive/audio2025/audios/model.tflite', 'wb') as f:
+  f.write(tflite_model)
