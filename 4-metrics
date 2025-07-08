@@ -1,0 +1,20 @@
+from google.colab import drive
+drive.mount('/content/drive')
+
+##
+import numpy as np
+dado = np.load('/content/drive/MyDrive/audio2025/audios/dados_teste_validacao.npz')
+
+##
+X_teste = dado['X_teste']
+y_teste = dado['y_teste']
+X_validacao = dado['X_validacao']
+y_validacao = dado['y_validacao']
+
+
+##
+!pip install --upgrade tensorflow keras
+import tensorflow as tf
+
+##
+modelo = tf.keras.models.load_model('/content/drive/MyDrive/audio2025/audios/modelo.keras')
