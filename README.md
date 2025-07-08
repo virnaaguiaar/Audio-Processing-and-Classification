@@ -54,7 +54,7 @@ Espectogramas são representações visuais de frequências ao longo do tempo.
 - Salva os espectrogramas em pastas separadas pelas categoria desejadas;
 - Armazena os espectrogramas e seus rótulos em listas para uso futuro.
 
-  ### → Filtragem de Sinais (Filtro Passa-Banda)
+### → Filtragem de Sinais (Filtro Passa-Banda)
  #### O que é?
 
  Um filtro passa-banda permite a passagem de frequências dentro de uma faixa específica (entre fcorte_inf e fcorte_sup), enquanto atenua frequências fora dessa faixa.
