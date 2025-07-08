@@ -1,3 +1,14 @@
+
+!pip install ffmpeg # Process audio and video files / format conversion, editing, recording, streaming, and more.
+
+from base64 import b64decode  # Decodes the base64-encoded string back to the original binary data
+from IPython.display import clear_output, display, HTML  # clear: Remove previous outputs before showing new results / display: Show audio directly / HTML: Render HTML content
+from google.colab import output
+import subprocess
+import os  # Interface to interact with the OS, enabling file/directory manipulation, etc.
+import ipywidgets as widgets  # Create interactive buttons
+import time
+
 # Categories (Commands)
 CATEGORIES = ["left", "right"]  # commands
 output_dir = "/content/drive/MyDrive/audio2025/audios/gravados"  # main output directory
