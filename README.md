@@ -43,4 +43,6 @@ Primeiramente é necessário criar um mecanismo de gravação de áudio caso voc
 
     modelo = tf.keras.models.load_model('/content/drive/MyDrive/audio2025/audios/modelo.keras')
 
+## Spectograma
+
 
