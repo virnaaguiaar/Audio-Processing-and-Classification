@@ -55,15 +55,16 @@ Espectogramas são representações visuais de frequências ao longo do tempo.
 - Armazena os espectrogramas e seus rótulos em listas para uso futuro.
 
   ### Filtragem de Sinais (Filtro Passa-Banda)
-O que é?
+#### O que é?
 
 Um filtro passa-banda permite a passagem de frequências dentro de uma faixa específica (entre fcorte_inf e fcorte_sup), enquanto atenua frequências fora dessa faixa.
 - Remove ruídos e frequências indesejadas (ex.: 50/60 Hz de interferência elétrica).
 - Melhora a qualidade do áudio antes da análise espectral.
 
-Como funciona no código?
+#### Como funciona no código?
 
 - butter() (da biblioteca scipy.signal):
+
     -Projeta um filtro Butterworth (resposta suave na banda de passagem).
     -Parâmetros:
   
@@ -72,4 +73,5 @@ Como funciona no código?
         Frequências normalizadas (inf_normalz, sup_normalz) para evitar aliasing.
 
 - filtfilt():
+  
     Aplica o filtro duas vezes (ida e volta) para evitar atraso de fase (distorção temporal).
