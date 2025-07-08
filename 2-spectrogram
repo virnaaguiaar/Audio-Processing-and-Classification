@@ -64,7 +64,7 @@ for category in CATEGORIES:
 
         # Short-Time Fourier Transform (divides audio and calculates frequency spectrum of each segment)
         amp_y1 = librosa.stft(y1_trimmed)
-        # Converts spectrum amplitude to decibels (dB) (logarithmic scale)
+        # Converts spectrum amplitude to decibels (dB) 
         y1_db = librosa.amplitude_to_db(np.abs(amp_y1), ref=np.max)  # (audio spectrogram converted to dB)
 
         # Check if y1_db has a valid value
