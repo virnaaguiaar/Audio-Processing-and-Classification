@@ -63,7 +63,7 @@ Espectogramas são representações visuais de frequências ao longo do tempo.
 
 #### Como funciona no código?
 
-- butter() (da biblioteca scipy.signal):
+- butter():
 
     Projeta um filtro Butterworth (resposta suave na banda de passagem).
 
