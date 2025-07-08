@@ -5,8 +5,36 @@ Este é um projeto de processamento e classificacao de audio que também tem o o
 O projeto é dividido em quatro partes que serão expostas nesse readme.
 
 ## Gravação
-Primeiramente é necessário creiar um mecanismo de gravação de áudio caso você ainda nao tenha os arquivos de áudio. Utilizei para esse mecanismo o googleColaboratoy que faz a ponte direta com o googleDrive para salvar os aquivos em pastas específicas.
+Primeiramente é necessário criar um mecanismo de gravação de áudio caso você ainda nao tenha os arquivos de áudio. Utilizei para esse mecanismo o googleColaboratoy que faz a ponte direta com o googleDrive para salvar os aquivos em pastas específicas.
 
+    #from google.colab import drive
+    drive.mount('/content/drive')
+
+    %cd /content/drive/MyDrive/audio2025/audios
+
+Para a pasta de áudios gravados:
+
+    output_dir = "/content/drive/MyDrive/audio2025/audios/gravados"  # Diretório principal de saída
+    os.makedirs(output_dir, exist_ok=True)
+
+Para a pasta dos espectogramas gerados através do processamento do áudio:
+
+    espectrograma_dir = "/content/drive/MyDrive/audio2025/audios/espectrogramas"
+
+Para salvar o modelo:
+
+    with open('/content/drive/MyDrive/audio2025/audios/model.tflite', 'wb') as f:
+      f.write(tflite_model)
+
+    dado = np.load('/content/drive/MyDrive/audio2025/audios/dados_teste_validacao.npz')
+
+    modelo = tf.keras.models.load_model('/content/drive/MyDrive/audio2025/audios/modelo.keras')
+
+
+
+
+    
+    
     # Categories (Commands)
 
     # commands
