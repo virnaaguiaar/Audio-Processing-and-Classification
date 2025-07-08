@@ -23,7 +23,7 @@ Primeiramente é necessário criar um mecanismo de gravação de áudio caso voc
     %cd /content/drive/MyDrive/audio2025/audios
 
 
-    - Para a pasta de áudios gravados:
+    #-Para a pasta de áudios gravados:
 
     output_dir = "/content/drive/MyDrive/audio2025/audios/gravados"  
     os.makedirs(output_dir, exist_ok=True)
