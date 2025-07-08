@@ -5,6 +5,19 @@ Este é um projeto de processamento e classificacao de audio que também tem o o
 O projeto é dividido em quatro partes que serão expostas nesse readme.
 
 ## Gravação
+
+O código é um sistema de gravação de áudio que:
+
+- Organiza os áudios em categorias (como "left" e "right")*
+- Cria uma pasta principal para armazenar os arquivos
+- Grava áudio usando o navegador e converte para formato WAV
+- Numera automaticamente cada nova gravação
+- Salva os arquivos em pastas específicas para cada comando
+- Possui um botão para iniciar o processo de gravação
+
+Cada parte do código está marcada com comentários que explicam sua função, desde a criação de diretórios até o processamento e salvamento dos arquivos de áudio.
+
+
 Primeiramente é necessário criar um mecanismo de gravação de áudio caso você ainda nao tenha os arquivos de áudio. Utilizei para esse mecanismo o googleColaboratoy que faz a ponte direta com o googleDrive para salvar os aquivos em pastas específicas.
 
     from google.colab import drive
@@ -31,18 +44,3 @@ Para salvar o modelo:
     modelo = tf.keras.models.load_model('/content/drive/MyDrive/audio2025/audios/modelo.keras')
 
 
-O código é um sistema de gravação de áudio que:
-
-    *Organiza os áudios em categorias (como "left" e "right")*
-
-    Cria uma pasta principal para armazenar os arquivos
-
-    Grava áudio usando o navegador e converte para formato WAV
-
-    Numera automaticamente cada nova gravação
-
-    Salva os arquivos em pastas específicas para cada comando
-
-    Possui um botão para iniciar o processo de gravação
-
-Cada parte do código está marcada com comentários que explicam sua função, desde a criação de diretórios até o processamento e salvamento dos arquivos de áudio.
