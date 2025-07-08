@@ -46,7 +46,9 @@ Primeiramente é necessário criar um mecanismo de gravação de áudio caso voc
 ##  📊 Spectograma  
 Este código realiza o pré-processamento de áudios e gera espectrogramas. 
 
-Espectogramas são representações visuais de frequências ao longo do tempo, onde:
+#### O que são espectogramas?
+
+São representações visuais de frequências ao longo do tempo, onde:
 
 - Eixo X: Tempo;
 - Eixo Y: frequência (escala logarítmica);
