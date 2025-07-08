@@ -1,6 +1,6 @@
 # Audio-Processing-and-Classification
 
-Este é um projeto de processamento e classificacao de audio que também tem o objetio de ser uma xposição e como funciona uma rede neural convolucional.
+Este é um projeto de processamento e classificacao de audio que também tem o objetio de ser uma exposição de como funciona uma rede neural convolucional.
 
 O projeto é dividido em quatro partes que serão expostas nesse readme. Cada parte do código está marcada com comentários que explicam sua função.
 
@@ -110,6 +110,7 @@ O códio desta seção:
     Ex.: Se sr=44100 Hz, a maior frequência detectável é 22050 Hz.
 
 - Normalização de Frequências:
+
     Antes de aplicar o filtro, as frequências são normalizadas pela frequência de Nyquist para evitar distorções no filtro digital.
 
 - Pré-requisito para Machine Learning:
