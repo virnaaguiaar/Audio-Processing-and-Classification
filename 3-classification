@@ -133,32 +133,21 @@ model.add(Dropout(0.5))
 model.add(Dense(6, activation='softmax'))
 
 
-
 model.compile(optimizar='adam',
               loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False),
               metrics=['accuracy'])
 
 
-##
-# Visão geral de todas as camadas do seu modelo, seus parâmetros, formas de saída e o número total de parâmetros treináveis e não treináveis
-model.summary()  aquiiiiiiiiiiiiiii
+# Overview of all model layers, their parameters, output shapes and total number of trainable and non-trainable parameters
+model.summary()  
 
 
-##
-# Treinar o modelo em Keras
-# (dados de entrada pra aprender, rótulos de cada classe, treinar 10 vezes, dar acurácia ou a perda à cada treino/época)
-historico = model.fit(X_treino, y_treino, epochs=10, validacao_dado=(X_validacao, y_validacao))
+# Train model in Keras
+# (input data to learn, labels for each class, train 10 times, give accuracy or loss at each training/epoch)
+history = model.fit(X_train, y_train, epochs=10, validation_data=(X_validation, y_validation))
 
 
-##
-# classification_report: resumo completo das principais métricas de desempenho de um modelo de classificação - precisão, recall, F1-score, acurácia, para cada classe
-# confusion_matrix: cria uma matriz de confusão - comparação entre as previsões do modelo e os rótulos reais (cada célula da matriz: número de ocorrências de cada combinação de rótulos previstos e reais)
-# accuracy_score: (previsões corretas)/(total)
-
-
-
-##
-# Usa os dados testes para prever a saída
+# Use test data to predict output
 predictions = model.predict(X_teste)
 
 
