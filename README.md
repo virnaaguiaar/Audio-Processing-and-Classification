@@ -143,6 +143,7 @@ Dense: Camada densa - cada neurônio está conectado a todos os neurônios da ca
 Dropout(reguarização): Queima aleatoriamente alguns neurônios durante o treinamento (reduzir o overfitting)
 
 Input: Define a forma da entrada da rede (número de pixels da imagem e o número de canais de cor)
+
 '''
  
 
