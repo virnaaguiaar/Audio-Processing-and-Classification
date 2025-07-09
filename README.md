@@ -124,6 +124,10 @@ O códio desta seção:
 
 
 ##  📊 Classificação  
+
+#keras: classificação de multiclasse / sequential: pilha linear de camadas, onde cada camada recebe a saída da camada anterior
+from tensorflow_keras import Sequential
+
 '''
 Conv2D: camada convolucional bidimensional, a principal camada
 
