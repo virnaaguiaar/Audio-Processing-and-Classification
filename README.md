@@ -150,7 +150,7 @@ Input: Define a forma da entrada da rede (número de pixels da imagem e o númer
 
 
 
-
+'''
 
 #Analisar o desempenho do modelo em termos de falsos positivos e falsos negativos
 
@@ -162,10 +162,10 @@ Input: Define a forma da entrada da rede (número de pixels da imagem e o númer
 
 #Sensibilidade = (Verdadeiros Positivos) / (Verdadeiros Positivos + Falsos Negativos)
 
+'''
 
 
-
-
+'''
 
 #Adam (Adaptive Moment Estimation): ajusta as taxas de aprendizado para cada parâmetro da rede, melhorando a eficiência e estabilidade do treinamento
 
@@ -179,10 +179,10 @@ Input: Define a forma da entrada da rede (número de pixels da imagem e o númer
                   loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False),
                   metrics=['accuracy'])
 
+'''
 
 
-
-
+'''
 
 #classification_report: resumo completo das principais métricas de desempenho de um modelo de classificação - precisão, recall, F1-score, acurácia, para cada classe
 
