@@ -122,6 +122,20 @@ O códio desta seção:
 
 - Leitura com OpenCV (cv2.imread()):
 
+
+##  📊 Classificação  
+'''
+Conv2D: camada convolucional bidimensional, a principal camada
+
+MaxPooling2D: Camada de pooling, que reduz(/2) as dimensões da imagem (diminuindo a resolução) = diminuir a complexidade computacional/evitar overfitting
+
+Flatten: "achata" a entrada q é matriz multidimensional -> vetor de uma única dimensão / (antes de adicionar camadas densas
+
+Dense: Camada densa - cada neurônio está conectado a todos os neurônios da camada anterior
+
+Dropout(reguarização): Queima aleatoriamente alguns neurônios durante o treinamento (reduzir o overfitting)
+
+Input: Define a forma da entrada da rede (número de pixels da imagem e o número de canais de cor)'''
   - Converte a imagem em um array NumPy para processamento posterior (ex.: redes neurais);
   - Permite pós-processamento de imagens (redimensionamento, equalização de histograma);
   - Compatível com frameworks de deep learning (ex.: TensorFlow, PyTorch).
