@@ -134,11 +134,6 @@ model.add(Dense(6, activation='softmax'))
 
 
 
-
-#Adam (Adaptive Moment Estimation): ajusta as taxas de aprendizado para cada parâmetro da rede, melhorando a eficiência e estabilidade do treinamento
-# Sparse...: Função de perda utilizada em classificação multiclasse. Com (labels) são números inteiros (em vez de vetores one-hot)
-# from_logits=False: indica que a saída da rede neural (logits) já é normalizada pelo softmax. // =True: indica que a rede retorna logits não normalizados // Keras irá aplicar a softmax automaticamente
-# Keras monitorar a porcentagem de previsões corretas do modelo
 model.compile(optimizar='adam',
               loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False),
               metrics=['accuracy'])
