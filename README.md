@@ -143,3 +143,13 @@ Input: Define a forma da entrada da rede (número de pixels da imagem e o númer
   - Converte a imagem em um array NumPy para processamento posterior (ex.: redes neurais);
   - Permite pós-processamento de imagens (redimensionamento, equalização de histograma);
   - Compatível com frameworks de deep learning (ex.: TensorFlow, PyTorch).
+
+
+
+##
+# Analisar o desempenho do modelo em termos de falsos positivos e falsos negativos
+
+# Precisão: exemplos positivos corretamente classificados olhando os classificados positivos.
+# Precisão = (Verdadeiros Positivos) / (Verdadeiros Positivos + Falsos Positivos)
+# Sensibilidade: exemplos positivos corretamente classificados olhando os que realmente são positivos
+# Sensibilidade = (Verdadeiros Positivos) / (Verdadeiros Positivos + Falsos Negativos)
