@@ -153,8 +153,11 @@ Input: Define a forma da entrada da rede (número de pixels da imagem e o númer
 #Analisar o desempenho do modelo em termos de falsos positivos e falsos negativos
 
 #Precisão: exemplos positivos corretamente classificados olhando os classificados positivos.
+
 #Precisão = (Verdadeiros Positivos) / (Verdadeiros Positivos + Falsos Positivos)
+
 #Sensibilidade: exemplos positivos corretamente classificados olhando os que realmente são positivos
+
 #Sensibilidade = (Verdadeiros Positivos) / (Verdadeiros Positivos + Falsos Negativos)
 
 
@@ -163,8 +166,11 @@ Input: Define a forma da entrada da rede (número de pixels da imagem e o númer
 
 
 #Adam (Adaptive Moment Estimation): ajusta as taxas de aprendizado para cada parâmetro da rede, melhorando a eficiência e estabilidade do treinamento
+
 #Sparse...: Função de perda utilizada em classificação multiclasse. Com (labels) são números inteiros (em vez de vetores one-hot)
+
 #from_logits=False: indica que a saída da rede neural (logits) já é normalizada pelo softmax. // =True: indica que a rede retorna logits não normalizados // Keras irá aplicar a softmax automaticamente
+
 #Keras monitorar a porcentagem de previsões corretas do modelo
 
     model.compile(optimizar='adam',
@@ -177,6 +183,8 @@ Input: Define a forma da entrada da rede (número de pixels da imagem e o númer
 
 
 #classification_report: resumo completo das principais métricas de desempenho de um modelo de classificação - precisão, recall, F1-score, acurácia, para cada classe
+
 #confusion_matrix: cria uma matriz de confusão - comparação entre as previsões do modelo e os rótulos reais (cada célula da matriz: número de ocorrências de cada combinação de rótulos previstos e reais)
+
 #accuracy_score: (previsões corretas)/(total)
 
