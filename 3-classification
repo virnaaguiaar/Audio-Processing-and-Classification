@@ -4,11 +4,20 @@
 from google.colab import drive
 drive.mount('/content/drive')
 
-from tqdm import tqdm
 import tensorflow as tf
 import os
 import numpy as np
 import cv2
+import random
+import pandas as pd
+import seaborn as sns #heatmap
+import matplotlib.pyplot as plt
+from tensorflow_keras import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, Input
+from tensorflow.keras.metrics import Precision, Recall
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+from tqdm import tqdm
+
 
 # Paths
 train_dir = '/content/drive/MyDrive/audio2025/audios/spectrograms/train'
@@ -51,7 +60,6 @@ print(len(test_data))
 print(len(validation_data))
 
 # Shuffle all files to avoid biased division (like input order in folder)
-import random
 random.shuffle(train_data)
 random.shuffle(test_data)
 random.shuffle(validation_data)
@@ -86,16 +94,7 @@ print('y_validation:', y_validation.shape)
 # Save multiple arrays in compressed .npz file
 np.savez('/content/drive/MyDrive/audio2025/audios/test_validation_data.npz', X_train=X_train, y_test=y_test, X_validation=X_validation, y_validation=y_validation)
 
-# keras: multiclass classification / sequential: linear stack of layers where each layer receives output from previous layer
-from tensorflow.keras import Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, Input
-
-##
-#keras: classificação de multiclasse / sequential: pilha linear de camadas, onde cada camada recebe a saída da camada anterior
-from tensorflow_keras import Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, Input
-
-
+#Keras
 
 #Definir forma: (altura, largura, 3 = 3 sinais de cor RedGreenBlue)
 input_shape = (231, 387, 3)
@@ -143,7 +142,6 @@ model.add(Dense(6, activation='softmax'))
 # Sensibilidade: exemplos positivos corretamente classificados olhando os que realmente são positivos
 # Sensibilidade = (Verdadeiros Positivos) / (Verdadeiros Positivos + Falsos Negativos)
 
-from tensorflow.keras.metrics import Precision, Recall
 
 #Adam (Adaptive Moment Estimation): ajusta as taxas de aprendizado para cada parâmetro da rede, melhorando a eficiência e estabilidade do treinamento
 # Sparse...: Função de perda utilizada em classificação multiclasse. Com (labels) são números inteiros (em vez de vetores one-hot)
@@ -169,7 +167,6 @@ historico = model.fit(X_treino, y_treino, epochs=10, validacao_dado=(X_validacao
 # classification_report: resumo completo das principais métricas de desempenho de um modelo de classificação - precisão, recall, F1-score, acurácia, para cada classe
 # confusion_matrix: cria uma matriz de confusão - comparação entre as previsões do modelo e os rótulos reais (cada célula da matriz: número de ocorrências de cada combinação de rótulos previstos e reais)
 # accuracy_score: (previsões corretas)/(total)
-from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 
 
 
@@ -184,9 +181,7 @@ print(classification_report(y_teste, predictions.argmax(axis=1)))
 
 
 ##
-# Biblioteca para gráfico mais compexo (heatmap)
-import seaborn as sns
-import matplotlib.pyplot as plt
+
 # Calcular a matrix de convolução(rótulos, previsões)
 cm = confusion_matrix(y_teste, predictions.argmax(axis=1))
 
@@ -228,8 +223,7 @@ plt.savefig('/content/drive/MyDrive/audio2025/audios/loss.png')
 plt.show()
 
 
-##
-import pandas as pd
+
 # Acessa as métricas
 metricas = historico.history
 # Cria DataFrame com as métricas: uma tabela - coluna: métrica / linha: época
