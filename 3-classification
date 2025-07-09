@@ -1,120 +1,101 @@
-# Garantir o uso da placa de vídeo
 !nvidia-smi
-
-##
-from google.colab import drive
-drive.mount('/content/drive')
-##
 !pip install --upgrade tensorflow keras
 
-##
-import tensorflow as tf
-print(tf.__version__)
+from google.colab import drive
+drive.mount('/content/drive')
 
-##
-#manipulação de diretórios e caminhos
-import os
-#exibir barra de progresso
 from tqdm import tqdm
+import tensorflow as tf
+import os
 import numpy as np
-#OpenCV: processa imagem (ler/redimessionar)
 import cv2
 
-#caminhos
-treino_dir = '/content/drive/MyDrive/audio2025/audios/espectrogramas/treino'
-teste_dir = '/content/drive/MyDrive/audio2025/audios/espectrogramas/teste'
-validacao_dir = '/contetnt/drive/MyDrive/audio2025/audios/espectrogramas/validacao'
+# Paths
+train_dir = '/content/drive/MyDrive/audio2025/audios/spectrograms/train'
+test_dir = '/content/drive/MyDrive/audio2025/audios/spectrograms/test'
+validation_dir = '/content/drive/MyDrive/audio2025/audios/spectrograms/validation'
 
-DATADIR = [treino_dir, teste_dir, validacao_dir]
+DATADIR = [train_dir, test_dir, validation_dir]
 CATEGORIES = ["right", "left"]
 
-#cria espaço
-treino_dado = []
-teste_dado = []
-validacao_dado = []
+# Create storage
+train_data = []
+test_data = []
+validation_data = []
 
 for dir in DATADIR:
   for category in CATEGORIES:
-    #diretório + classe = caminho completo
+    # directory + class = complete path
     path = os.path.join(dir, category)
-    #índice da classe para dividir/discriminar
+    # class index to divide/discriminate
     label = CATEGORIES.index(category)
 
-    #Percorrer todos os arquivos
-    for img_file in tqdm(os.listdir(path), desc=f'Carregando imagens de {category} - {DATADIR.index(dir)}', unit = 'imagem'):
-      #Carrega a imagem em escala de cinza
-      imagem = cv2.imread(os.path.join(path, image_file), 1)
-      #Redimesiona a imagem para 387x231 px
-      imagem = cv2.resize(imagem, (387, 231))
+    # Iterate through all files
+    for img_file in tqdm(os.listdir(path), desc=f'Loading images from {category} - {DATADIR.index(dir)}', unit = 'image'):
+      # Load image in grayscale
+      img = cv2.imread(os.path.join(path, img_file), 1)
+      # Resize image to 387x231 px
+      img = cv2.resize(img, (387, 231))
 
-      #Preencher as listas com os arquivos
-      if(dir == treino_dir):
-        treino_dado.append([imagem, label])
-      elif(dir == teste_dir):
-        teste_dado.append([imagem, label])
-      elif(dir == validacao_dir):
-        validacao_dado.append([imagem, label])
+      # Fill lists with files
+      if(dir == train_dir):
+        train_data.append([img, label])
+      elif(dir == test_dir):
+        test_data.append([img, label])
+      elif(dir == validation_dir):
+        validation_data.append([img, label])
 
-##
-
-#Noção da divisão
+# Data distribution overview
 print(len(train_data))
 print(len(test_data))
-print(len(valid_data))
+print(len(validation_data))
 
-##
-#Emabralhar todos os arquivos para evitar divisão enviesada (como ordem de entrada na pasta)
+# Shuffle all files to avoid biased division (like input order in folder)
 import random
-random.shuffle(treino_dado)
-random.shuffle(teste_dado)
-random.shuffle(validacao_dado)
+random.shuffle(train_data)
+random.shuffle(test_data)
+random.shuffle(validation_data)
 
-##
-# /255: normalizar valores e melhorar desempenho / acelerar o treino e ter mais estabilidade numérica
-#imagens carregadas em escala de cinza: varia de [0,255]
-# Extrair apenas a imagem (espectrog.) uso de '_' para ignorar 'label' (lista = imagem + label)
-X_treino = np.array([spec for spec, _ in treino_dado]) / 255
-# Extrair apenas o rótulo (label.) uso de '_' para ignorar 'espectograma' (lista = imagem + label)
-y_treino = np.array([lab for _, lab in treino_dado])
+# /255: normalize values and improve performance (speed up training and have more numerical stability)
+# Images loaded in grayscale: ranges from [0,255]
 
-X_teste = np.array([spec for spec, _ in teste_dado]) / 255
-y_teste = np.array([lab for _, lab in teste_dado])
-X_validacao = np.array([spec for spec, _ in validacao_dado]) / 255
-y_validacao = np.array([lab for _, lab in validacao_dado])
+# Extract only the image (spectrogram) using '_' to ignore 'label' (list = image + label)
+X_train = np.array([spec for spec, _ in train_data]) / 255
 
-#'.shape': retorna as dimensões do array
+# Extract only the label using '_' to ignore 'spectrogram' (list = image + label)
+y_train = np.array([lab for _, lab in train_data])
+
+X_test = np.array([spec for spec, _ in test_data]) / 255
+y_test = np.array([lab for _, lab in test_data])
+X_validation = np.array([spec for spec, _ in validation_data]) / 255
+y_validation = np.array([lab for _, lab in validation_data])
+
+# '.shape': output array dimensions
+# Output: X(number of images, image dimensions, 3 = 3 color RGB)
+#         y(number of images, )
+
 print('Shapes:')
-print('X_treino:', X_treino.shape)
-print('y_treino:', y_treino.shape)
-print('X_teste:', X_teste.shape)
-print('y_teste:', y_teste.shape)
-print('X_validacao:', X_validacao.shape)
-print('y_validacao:', y_validacao.shape)
-#Saída: X(n° de imagens, dimensões das imagens, 3=3 sinais de cor RedGreenBlue)
-#       y(n° de imagens, )
-
-##
-# Salva múltiplos arrays no arquivo compactado .npz
-np.savez('/content/drive/MyDrive/audio2025/audios/dados_teste_validacao.npz', X_treino=X_treino, y_teste=y_teste, X_validacao=X_validacao, y_validacao=y_validacao)
+print('X_train:', X_train.shape)
+print('y_train:', y_train.shape)
+print('X_test:', X_test.shape)
+print('y_test:', y_test.shape)
+print('X_validation:', X_validation.shape)
+print('y_validation:', y_validation.shape)
 
 
+# Save multiple arrays in compressed .npz file
+np.savez('/content/drive/MyDrive/audio2025/audios/test_validation_data.npz', X_train=X_train, y_test=y_test, X_validation=X_validation, y_validation=y_validation)
+
+# keras: multiclass classification / sequential: linear stack of layers where each layer receives output from previous layer
+from tensorflow.keras import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, Input
 
 ##
 #keras: classificação de multiclasse / sequential: pilha linear de camadas, onde cada camada recebe a saída da camada anterior
 from tensorflow_keras import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, Input
-'''
-Conv2D: camada convolucional bidimensional, a principal camada
 
-MaxPooling2D: Camada de pooling, que reduz(/2) as dimensões da imagem (diminuindo a resolução) = diminuir a complexidade computacional/evitar overfitting
 
-Flatten: "achata" a entrada q é matriz multidimensional -> vetor de uma única dimensão / (antes de adicionar camadas densas
-
-Dense: Camada densa - cada neurônio está conectado a todos os neurônios da camada anterior
-
-Dropout(reguarização): Queima aleatoriamente alguns neurônios durante o treinamento (reduzir o overfitting)
-
-Input: Define a forma da entrada da rede (número de pixels da imagem e o número de canais de cor)'''
 
 #Definir forma: (altura, largura, 3 = 3 sinais de cor RedGreenBlue)
 input_shape = (231, 387, 3)
