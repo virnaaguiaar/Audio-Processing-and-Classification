@@ -96,51 +96,43 @@ np.savez('/content/drive/MyDrive/audio2025/audios/test_validation_data.npz', X_t
 
 #Keras
 
-#Definir forma: (altura, largura, 3 = 3 sinais de cor RedGreenBlue)
+# Define shape: (height, width, 3 = 3 color RGB)
 input_shape = (231, 387, 3)
 
 model = Sequential()
 
-# Adicionar a camada de entrada (para o modelo saber a dimensão dos dados de entrada)
+# Add input layer (so model knows input data dimension)
 model.add(Input(shape=input_shape))
 
-# ADICIONAR CAMADAS CONVOLUCIONAIS
-# ---Primeira camada (convolucional + pooling)
-# (32 filtros/kernels, tamanho do filtro, ativador comum: REtified Linear Unit)
+# ADD CONVOLUTIONAL LAYERS
+# ---First layer (convolutional + pooling)
+# (32 filters/kernels, filter size, common activator: REtified Linear Unit)
 model.add(Conv2D(32, (3,3), activation='relu'))
-# Pega a região 2x2 de cada parte da imagem - escolhe o valor máximo dessa região - forma nova imagem reduzida
+# Takes 2x2 region from each image part - selects max value from that region - forms new reduced image
 model.add(MaxPooling2D((2,2)))
 
-#---Segunda camada (convolucional + pooling)
+#---Second layer (convolutional + pooling)
 model.add(Conv2D(64, (3, 3), activation='relu'))
 model.add(MaxPooling2D((2, 2)))
 
-#---Terceira camada (convolucional + pooling)
+#---Third layer (convolutional + pooling)
 model.add(Conv2D(128, (3, 3), activation='relu'))
 model.add(MaxPooling2D((2, 2)))
 
-# 'ACHATAR' 2D -> 1D
+# 'FLATTEN' 2D -> 1D
 model.add(Flatten())
 
-# ADICIONAR CAMADAS DENSAS
-#---Primeira camada densa + Dropout
-# Camada com 512 neurônios
+# ADD DENSE LAYERS
+#---First dense layer + Dropout
+# Layer with 512 neurons
 model.add(Dense(512, activation='relu'))
-# Desliga aleatoriamente 50% dos neurônios para evitar overfitting
+# Randomly turns off 50% of neurons to avoid overfitting
 model.add(Dropout(0.5))
 
-#---Camada final (densa + Softmax)
+#---Final layer (dense + Softmax)
 model.add(Dense(6, activation='softmax'))
 
 
-
-##
-# Analisar o desempenho do modelo em termos de falsos positivos e falsos negativos
-
-# Precisão: exemplos positivos corretamente classificados olhando os classificados positivos.
-# Precisão = (Verdadeiros Positivos) / (Verdadeiros Positivos + Falsos Positivos)
-# Sensibilidade: exemplos positivos corretamente classificados olhando os que realmente são positivos
-# Sensibilidade = (Verdadeiros Positivos) / (Verdadeiros Positivos + Falsos Negativos)
 
 
 #Adam (Adaptive Moment Estimation): ajusta as taxas de aprendizado para cada parâmetro da rede, melhorando a eficiência e estabilidade do treinamento
