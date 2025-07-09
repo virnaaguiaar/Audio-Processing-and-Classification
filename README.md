@@ -160,3 +160,10 @@ Input: Define a forma da entrada da rede (número de pixels da imagem e o númer
 #Sparse...: Função de perda utilizada em classificação multiclasse. Com (labels) são números inteiros (em vez de vetores one-hot)
 #from_logits=False: indica que a saída da rede neural (logits) já é normalizada pelo softmax. // =True: indica que a rede retorna logits não normalizados // Keras irá aplicar a softmax automaticamente
 #Keras monitorar a porcentagem de previsões corretas do modelo
+
+
+##
+#classification_report: resumo completo das principais métricas de desempenho de um modelo de classificação - precisão, recall, F1-score, acurácia, para cada classe
+#confusion_matrix: cria uma matriz de confusão - comparação entre as previsões do modelo e os rótulos reais (cada célula da matriz: número de ocorrências de cada combinação de rótulos previstos e reais)
+#accuracy_score: (previsões corretas)/(total)
+
