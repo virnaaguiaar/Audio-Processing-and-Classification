@@ -148,72 +148,58 @@ history = model.fit(X_train, y_train, epochs=10, validation_data=(X_validation, 
 
 
 # Use test data to predict output
-predictions = model.predict(X_teste)
+predictions = model.predict(X_test)
+
+# Show(detailed report(label, returns each label in class with highest probability))
+print(classification_report(y_test, predictions.argmax(axis=1)))
 
 
-##
-# Mostrar(relatório detalhado(rótulo, retorna cada rótulo da na classe com a maior probabilidade))
-print(classification_report(y_teste, predictions.argmax(axis=1)))
+# Calculate confusion matrix(labels, predictions)
+cm = confusion_matrix(y_test, predictions.argmax(axis=1))
 
-
-##
-
-# Calcular a matrix de convolução(rótulos, previsões)
-cm = confusion_matrix(y_teste, predictions.argmax(axis=1))
-
-# Tamanho da figura (8x6 polegadas)
+# Figure size (8x6 inches)
 plt.figure(figsize=(8, 6))
-#mapa de calor(matriz, adicionar os valores direto no mapa, tons de azul, decimal, eixos com as classes)
+# heatmap(matrix, add values directly on map, blue tones, decimal, axes with classes)
 sns.heatmap(cm, annot=True, cmap='Blues', fmt='d', xticklabels=CATEGORIES, yticklabels=CATEGORIES)
-plt.xlabel('Previsão')
-plt.ylabel('Real')
-plt.title('Matriz de confusão')
+plt.xlabel('Prediction')
+plt.ylabel('Actual')
+plt.title('Confusion Matrix')
 plt.savefig('/content/drive/MyDrive/audio2025/audios/confusion_matrix.png')
 plt.show()
 
+# Training history: track how accuracy and loss evolved through epochs
+print(history.history.keys())
+print(history.history['accuracy'])
+print(history.history['loss'])
 
-
-##
-# Histórico de treinamento: acompanhar como acurácia e perda evoluíram ao longo das épocas
-print(historico.history.keys())
-print(historico.history['acuracy'])
-print(historico.history['loss'])
-
-
-##
-# Gráfico de acurácia
+# Accuracy plot
 plt.plot(history.history['accuracy'])
-plt.title('Modelo de acurácia')
-plt.ylabel('Acurácia')
-plt.xlabel('Época')
+plt.title('Model Accuracy')
+plt.ylabel('Accuracy')
+plt.xlabel('Epoch')
 plt.savefig('/content/drive/MyDrive/audio2025/audios/accuracy.png')
+plt.show()
 
-
-##
-# Gráfico de perda
+# Loss plot
 plt.plot(history.history['loss'])
-plt.title('Modelo de perda')
-plt.ylabel('Perda')
-plt.xlabel('Época')
+plt.title('Model Loss')
+plt.ylabel('Loss')
+plt.xlabel('Epoch')
 plt.savefig('/content/drive/MyDrive/audio2025/audios/loss.png')
 plt.show()
 
 
+# Access metrics
+metrics = history.history
+# Create DataFrame with metrics: a table - column: metric / row: epoch
+metrics_df = pd.DataFrame(metrics)
+# to_csv(): converts metrics_df DataFrame to CSV file      //index=False: no index
+metrics_df.to_csv('/content/drive/MyDrive/audio2025/audios/metrics_manualv2.csv', index=False)
 
-# Acessa as métricas
-metricas = historico.history
-# Cria DataFrame com as métricas: uma tabela - coluna: métrica / linha: época
-metricas_df = pd.DataFrame(metricas)
-# to_csv(): converte o DataFrame metricas_df p-> arquivo CSV      //index=False: sem índice
-metricas_df.to_csv('/content/drive/MyDrive/audio2025/audios/metrics_manualv2.csv', index=False)
-
-
-
-##
-# Converte o modelo treinado de TensorFlow/Keras -> TensorFlow Lite (TFLite)
-converter = tf.lite.TFLiteConverter.from_keras_model(modelo)
+# Convert trained TensorFlow/Keras model -> TensorFlow Lite (TFLite)
+converter = tf.lite.TFLiteConverter.from_keras_model(model)
 tflite_model = converter.convert()
 
-# Salvar o modelo
+# Save model
 with open('/content/drive/MyDrive/audio2025/audios/model.tflite', 'wb') as f:
   f.write(tflite_model)
