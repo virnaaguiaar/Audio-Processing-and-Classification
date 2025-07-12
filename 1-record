@@ -1,4 +1,3 @@
-
 !pip install ffmpeg # Process audio and video files / format conversion, editing, recording, streaming, and more.
 
 from base64 import b64decode  # Decodes the base64-encoded string back to the original binary data
@@ -11,7 +10,7 @@ import time
 
 # Categories (Commands)
 CATEGORIES = ["left", "right"]  # commands
-output_dir = "/content/drive/MyDrive/audio2025/audios/gravados"  # main output directory
+output_dir = "/content/drive/MyDrive/audio2025/audios/recordings"  # main output directory
 os.makedirs(output_dir, exist_ok=True)
 
 # Function to record audio and return the WAV data 
@@ -93,19 +92,16 @@ def recording_audio(command, duration):
     return wav_data
 
 def get_next_recording_number(path):
-
-  numero_arquivos = 0
-  for arquivo in os.listdir(path):
-    numero_arquivos += 1
-
-  return numero_arquivos+1
+    file_count = 0
+    for file in os.listdir(path):
+        file_count += 1
+    return file_count+1
 
 # function to process audio files and save them in their respective folders
 def record_and_save():
     clear_output()
     for command in CATEGORIES:
-
-        # Create a category folder if it doesn't exist,
+        # Create a category folder if it doesn't exist
         category_dir = os.path.join(output_dir, command)
         os.makedirs(category_dir, exist_ok=True)
 
@@ -116,14 +112,15 @@ def record_and_save():
         file_name = os.path.join(category_dir, f"{command}-{next_number:02}.wav")
 
         # Record audio and automatically save
-        print(f"Recording audio to {command}-{next_number}")
+        print(f"Recording audio for {command}-{next_number}")
         audio_data = recording_audio(command, duration=3)
         with open(file_name, 'wb') as f:
             f.write(audio_data)
-        print(f"Save audio to {command}")
+        print(f"Saved audio to {command}")
         if command == CATEGORIES[-1]:
-          display(button)
+            display(button)
+
 # Function to start recording with a button 
-button = widgets.Button(description="Iniciar gravações")
+button = widgets.Button(description="Start recordings")
 button.on_click(lambda x: record_and_save())
 display(button)
