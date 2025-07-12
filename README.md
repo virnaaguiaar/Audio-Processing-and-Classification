@@ -23,29 +23,35 @@ O código é um sistema de gravação de áudio que:
 
 Primeiramente, é necessário criar um mecanismo de gravação de áudio caso você ainda não tenha os arquivos de áudio. Utilizei para esse mecanismo o GoogleColaboratoy que faz a ponte direta com o GoogleDrive para salvar os aquivos em pastas específicas.
 
-    from google.colab import drive
-    drive.mount('/content/drive')
+```python
 
-    %cd /content/drive/MyDrive/audio2025/audios
+from google.colab import drive
+drive.mount('/content/drive')
 
+%cd /content/drive/MyDrive/audio2025/audios
+```
 Para a pasta de áudios gravados:
 
-    output_dir = "/content/drive/MyDrive/audio2025/audios/gravados"  
-    os.makedirs(output_dir, exist_ok=True)
+```python
+output_dir = "/content/drive/MyDrive/audio2025/audios/gravados"  
+os.makedirs(output_dir, exist_ok=True)
+```
+
 
 Para a pasta dos espectogramas gerados através do processamento do áudio:
-
-    espectrograma_dir = "/content/drive/MyDrive/audio2025/audios/espectrogramas"
+```python
+espectrograma_dir = "/content/drive/MyDrive/audio2025/audios/espectrogramas"
+```
 
 Para salvar o modelo:
-    
-    with open('/content/drive/MyDrive/audio2025/audios/model.tflite', 'wb') as f:
-      f.write(tflite_model)
+```python
+with open('/content/drive/MyDrive/audio2025/audios/model.tflite', 'wb') as f:
+  f.write(tflite_model)
 
-    dado = np.load('/content/drive/MyDrive/audio2025/audios/dados_teste_validacao.npz')
+dado = np.load('/content/drive/MyDrive/audio2025/audios/dados_teste_validacao.npz')
 
-    modelo = tf.keras.models.load_model('/content/drive/MyDrive/audio2025/audios/modelo.keras')
-
+modelo = tf.keras.models.load_model('/content/drive/MyDrive/audio2025/audios/modelo.keras')
+```
 
 ##  📊 Spectograma  
 
@@ -151,8 +157,9 @@ A camada oculta da rede neural é composta por outras camadas, como descrito aba
 O KERAS nos permite fazer um classificação de multiclasse.
 
 No Keras podemos importar uma biblioteca que permite modelar de acordo com o padrão de uma rede neural, o `sequential`:  pilha linear de camadas, onde cada camada recebe a saída da camada anterior
-
-    from tensorflow_keras import Sequential
+```python
+from tensorflow_keras import Sequential
+```
 
 ### → Configuração de Treinamento em Keras
 
@@ -172,13 +179,13 @@ No Keras podemos importar uma biblioteca que permite modelar de acordo com o pad
 | `True`  | A rede retorna logits (valores brutos, não normalizados). Keras aplicará softmax automaticamente |
 
 #### Exemplo de Código
-
-        model.compile(
-            optimizer='adam',
-            loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False),
-            metrics=['accuracy']
-        )
-
+```python
+model.compile(
+    optimizer='adam',
+    loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False),
+    metrics=['accuracy']
+)
+```
 
 ##  📊 Métricas  
 
