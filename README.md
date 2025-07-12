@@ -127,69 +127,117 @@ O códio desta seção:
 
 ##  📊 Classificação  
 
-#keras: classificação de multiclasse / sequential: pilha linear de camadas, onde cada camada recebe a saída da camada anterior
-
-from tensorflow_keras import Sequential
-
-
 ### → Camadas da Rede Neural
-'''
-Conv2D: camada convolucional bidimensional, a principal camada
 
-MaxPooling2D: Camada de pooling, que reduz(/2) as dimensões da imagem (diminuindo a resolução) = diminuir a complexidade computacional/evitar overfitting
+Uma rede neural é composta por:
 
-Flatten: "achata" a entrada q é matriz multidimensional -> vetor de uma única dimensão / (antes de adicionar camadas densas
+    CAMADA DE ENTRADA + CAMADA OCULTA + CAMADA DE SAÍDA
 
-Dense: Camada densa - cada neurônio está conectado a todos os neurônios da camada anterior
+A camada de entrada representa todos os dados que damos para que o modelo seja trenidado. A seguinte é a camada oculta, que faz o treinamneto. É possível possuir mais de uma camada oculta, dependando da finalidade do usuário. A última camada é a de saída, que nos dá o resultado do treinamento.
 
-Dropout(reguarização): Queima aleatoriamente alguns neurônios durante o treinamento (reduzir o overfitting)
+A camada oculta da rede neural é composta por outras camadas, como descrito abaixo:
 
-Input: Define a forma da entrada da rede (número de pixels da imagem e o número de canais de cor)
-
-'''
- ![Sem título](https://github.com/user-attachments/assets/4ee69baf-af77-44a8-bea3-e9004dd7fbf4){:width="150px"}
-
-
+- Conv2D: camada convolucional bidimensional, a principal camada;
+- MaxPooling2D: Camada de pooling, que reduz pela metade (/2) as dimensões da imagem. Ao diminuir a resolução, diminui-se a complexidade computacional e evita overfitting;
+- Flatten: achata a entrada que é matriz multidimensional e o transforma em um vetor de uma única dimensão. Passo necessário antes de adicionar camadas densas;
+- Dense: Camada densa - cada neurônio está conectado a todos os neurônios da camada anterior;
+- Dropout(reguarização): Queima aleatoriamente alguns neurônios durante o treinamento, para também reduzir o overfitting;
+- Input: Define a forma da entrada da rede (número de pixels da imagem e o número de canais de cor).
 
 
-
-'''
-
-#Analisar o desempenho do modelo em termos de falsos positivos e falsos negativos
-
-#Precisão: exemplos positivos corretamente classificados olhando os classificados positivos.
-
-#Precisão = (Verdadeiros Positivos) / (Verdadeiros Positivos + Falsos Positivos)
-
-#Sensibilidade: exemplos positivos corretamente classificados olhando os que realmente são positivos
-
-#Sensibilidade = (Verdadeiros Positivos) / (Verdadeiros Positivos + Falsos Negativos)
-
-'''
+  ![Sem título](https://github.com/user-attachments/assets/4ee69baf-af77-44a8-bea3-e9004dd7fbf4){:width="150px"}
 
 
-'''
+### → Keras
 
-#Adam (Adaptive Moment Estimation): ajusta as taxas de aprendizado para cada parâmetro da rede, melhorando a eficiência e estabilidade do treinamento
+O KERAS nos permite fazer um classificação de multiclasse.
 
-#Sparse...: Função de perda utilizada em classificação multiclasse. Com (labels) são números inteiros (em vez de vetores one-hot)
+No Keras podemos importar uma biblioteca que permite modelar de acordo com o padrão de uma rede neural, o sequential:  pilha linear de camadas, onde cada camada recebe a saída da camada anterior
 
-#from_logits=False: indica que a saída da rede neural (logits) já é normalizada pelo softmax. // =True: indica que a rede retorna logits não normalizados // Keras irá aplicar a softmax automaticamente
-
-#Keras monitorar a porcentagem de previsões corretas do modelo
-
-    model.compile(optimizar='adam',
-                  loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False),
-                  metrics=['accuracy'])
-
-'''
+    from tensorflow_keras import Sequential
 
 
-'''
+### → Análise de Desempenho do Modelo
 
-#classification_report: resumo completo das principais métricas de desempenho de um modelo de classificação - precisão, recall, F1-score, acurácia, para cada classe
+#### Métricas de Classificação
 
-#confusion_matrix: cria uma matriz de confusão - comparação entre as previsões do modelo e os rótulos reais (cada célula da matriz: número de ocorrências de cada combinação de rótulos previstos e reais)
+#### - Precisão (Precision)
+Mede a proporção de exemplos positivos corretamente classificados entre todos os classificados como positivos.
 
-#accuracy_score: (previsões corretas)/(total)
+$\text{Precisão} = \frac{VP}{VP + FP}$
 
+#### - Sensibilidade/Revocação (Recall/Sensitivity)
+Mede a proporção de exemplos positivos corretamente classificados entre todos os que realmente são positivos.
+
+$\text{Sensibilidade} = \frac{VP}{VP + FN}$
+
+#### - F1-Score
+Média harmônica entre Precisão e Sensibilidade:
+            
+$F_1 = 2 \times \frac{\text{Precisão} \times \text{Sensibilidade}}{\text{Precisão} + \text{Sensibilidade}}$
+
+#### - Especificidade
+Mede a proporção de negativos corretamente identificados:
+
+$\text{Especificidade} = \frac{VN}{VN + FP}$
+
+#### Legenda:
+- **VP (Verdadeiros Positivos):** Casos positivos corretamente classificados
+- **VN (Verdadeiros Negativos):** Casos negativos corretamente classificados
+- **FP (Falsos Positivos):** Casos negativos erroneamente classificados como positivos
+- **FN (Falsos Negativos):** Casos positivos erroneamente classificados como negativos
+
+
+#### Métrica: Accuracy
+- Monitora a **porcentagem de previsões corretas** durante o treinamento e validação
+- Fórmula: 
+
+  $\text{Accuracy} = \frac{\text{Previsões Corretas}}{\text{Total de Exemplos}}$
+
+### → Configuração de Treinamento em Keras
+
+#### Otimizador Adam (Adaptive Moment Estimation)
+- Ajusta as taxas de aprendizado individualmente para cada parâmetro da rede neural
+- Combina os benefícios do **momentum** e da **adaptação de taxas de aprendizado**
+- Melhora a eficiência e estabilidade do treinamento
+
+#### Função de Perda: SparseCategoricalCrossentropy
+- Utilizada para problemas de **classificação multiclasse**
+- Versão "esparsa" significa que os labels são fornecidos como **inteiros** (ex: [0, 2, 1]) em vez de **one-hot encoding** (ex: [[1,0,0], [0,0,1], [0,1,0]])
+
+##### Parâmetro `from_logits`:
+| Valor  | Comportamento |
+|--------|---------------|
+| `False` | A saída da rede já está normalizada (probabilidades via softmax) |
+| `True`  | A rede retorna logits (valores brutos, não normalizados). Keras aplicará softmax automaticamente |
+
+#### Exemplo de Código
+
+        model.compile(
+            optimizer='adam',
+            loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False),
+            metrics=['accuracy']
+        )
+
+### → Matriz de Confusão
+
+É uma tabela que compara as previsões do modelo com os valores reais (rótulos verdadeiros). Cada célula mostra quantas vezes uma combinação específica de previsão e valor real ocorreu.
+
+- Diagonal principal: Acertos do modelo.
+- Demais células: Erros (confusões entre classes).
+
+
+
+![Sem título(1)](https://github.com/user-attachments/assets/73d15459-57a1-4856-8234-40fc84953edb)
+
+Por que usar?
+
+- Identifica padrões de erro: Quais classes são mais confundidas.
+- Vai além da acurácia: Mostra trade-offs entre FP e FN.
+- Essencial para classes desbalanceadas.
+
+A partir da matriz, calculamos:
+
+- Acurácia (Accuracy)
+- Precisão (Precision)
+- Recall/Sensibilidade (Recall)
