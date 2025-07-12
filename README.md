@@ -131,6 +131,8 @@ O códio desta seção:
 
 from tensorflow_keras import Sequential
 
+
+### → Camadas da Rede Neural
 '''
 Conv2D: camada convolucional bidimensional, a principal camada
 
@@ -145,7 +147,8 @@ Dropout(reguarização): Queima aleatoriamente alguns neurônios durante o trein
 Input: Define a forma da entrada da rede (número de pixels da imagem e o número de canais de cor)
 
 '''
- 
+ ![Sem título](https://github.com/user-attachments/assets/4ee69baf-af77-44a8-bea3-e9004dd7fbf4)
+
 
 
 
