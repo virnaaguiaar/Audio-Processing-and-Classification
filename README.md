@@ -1,8 +1,16 @@
 # Audio Processing and Classification
 
-Este é um projeto de processamento e classificacao de audio que também tem o objetio de ser uma exposição de como funciona uma rede neural convolucional.
+Este projeto é um sistema completo de processamento e classificação de áudio que também serve como guia educativo sobre o funcionamento de redes neurais convolucionais. ✨
 
-O projeto é dividido em quatro partes que serão expostas nesse readme. Cada parte do código está marcada com comentários que explicam sua função.
+## 📋 Visão Geral
+O projeto está organizado em 4 etapas principais:
+1. 🎙️ Gravação de áudio
+2. 📊 Geração de espectrogramas
+3. 🧠 Classificação com rede neural
+4. 📈 Análise de métricas
+
+---
+
 
 ## 🎙️ Gravação 
 
@@ -15,26 +23,23 @@ O código é um sistema de gravação de áudio que:
 - Possui um botão para iniciar o processo de gravação.
 
 
-Primeiramente é necessário criar um mecanismo de gravação de áudio caso você ainda nao tenha os arquivos de áudio. Utilizei para esse mecanismo o googleColaboratoy que faz a ponte direta com o googleDrive para salvar os aquivos em pastas específicas.
+Primeiramente, é necessário criar um mecanismo de gravação de áudio caso você ainda não tenha os arquivos de áudio. Utilizei para esse mecanismo o GoogleColaboratoy que faz a ponte direta com o GoogleDrive para salvar os aquivos em pastas específicas.
 
     from google.colab import drive
     drive.mount('/content/drive')
 
     %cd /content/drive/MyDrive/audio2025/audios
 
-
-    -Para a pasta de áudios gravados:
+Para a pasta de áudios gravados:
 
     output_dir = "/content/drive/MyDrive/audio2025/audios/gravados"  
     os.makedirs(output_dir, exist_ok=True)
 
-
-    - Para a pasta dos espectogramas gerados através do processamento do áudio:
+Para a pasta dos espectogramas gerados através do processamento do áudio:
 
     espectrograma_dir = "/content/drive/MyDrive/audio2025/audios/espectrogramas"
 
-
-    - Para salvar o modelo:
+Para salvar o modelo:
     
     with open('/content/drive/MyDrive/audio2025/audios/model.tflite', 'wb') as f:
       f.write(tflite_model)
@@ -43,7 +48,9 @@ Primeiramente é necessário criar um mecanismo de gravação de áudio caso voc
 
     modelo = tf.keras.models.load_model('/content/drive/MyDrive/audio2025/audios/modelo.keras')
 
+---
 ##  📊 Spectograma  
+
 Este código realiza o pré-processamento de áudios e gera espectrogramas. 
 
 #### O que são espectogramas?
@@ -55,7 +62,7 @@ São representações visuais de frequências ao longo do tempo, onde:
 - Cores: Intensidade (dB).
 
 
-O códio desta seção:
+O código desta seção:
 - Monta o Google Drive para acessar arquivos;
 - Instala e importa bibliotecas necessárias (librosa, OpenCV, matplotlib, scipy);
 - Aplica um filtro passa-banda para isolar frequências entre 100 Hz e 10.000 Hz, removendo ruídos indesejados, usados também para remover silêncios do início e fim do áudio;
@@ -72,44 +79,35 @@ O códio desta seção:
 
 #### Como funciona no código?
 
-- butter():
-
-    Projeta um filtro Butterworth (resposta suave na banda de passagem).
-
-    Parâmetros:
-  
-        order=5 → Quanto maior a ordem, mais "íngreme" é a filtragem.
-        btype='band' → Define um filtro passa-banda.
-        Frequências normalizadas (inf_normalz, sup_normalz) para evitar aliasing.
-
-- filtfilt():
-  
-    Aplica o filtro duas vezes (ida e volta) para evitar atraso de fase (distorção temporal).
+|Parâmetros| Função | 
+|--------|--------|
+|`butter()`| Projeta um filtro Butterworth (resposta suave na banda de passagem) |
+|`butter()` → `order=5` | Quanto maior a ordem, mais "íngreme" é a filtragem |
+|`butter()` → `btype='band'` | Define um filtro passa-banda|
+| `butter()` → `inf_normalz, sup_normalz` |Frequências normalizadas para evitar aliasing|
+| `filtfilt()` |Aplica o filtro duas vezes (ida e volta) para evitar atraso de fase (distorção temporal)|
+   
 
 ### → Pré-Processamento de Áudio (Librosa)
  #### Operações principais:
- - librosa.stft() (Short-Time Fourier Transform)
 
-    - Divide o sinal em pequenos segmentos e calcula a Transformada de Fourier para cada um.
-
-    - Saída: Matriz complexa representando magnitudes e fases em diferentes frequências ao longo do tempo.
-
-- librosa.amplitude_to_db()
-
-    - Converte amplitudes em decibéis (dB) (escala logarítmica).
-
-    Motivação:
-    - O ouvido humano percebe sons em escala logarítmica.
-
-    - Melhora o contraste em espectrogramas.
-
+|Parâmetros| Função | Saída | Motivação |
+|--------|--------|--------|--------|
+|`librosa.stft()`| Divide o sinal em pequenos segmentos e calcula a Transformada de Fourier para cada um| Matriz complexa representando magnitudes e fases em diferentes frequências ao longo do tempo| |
+|`librosa.amplitude_to_db()` |Converte amplitudes em decibéis (dB) (escala logarítmica) | |O ouvido humano percebe sons em escala logarítmica; Melhora o contraste em espectrogramas|
 
 ### → Tópicos Extra
 
-- Taxa de Amostragem (sr) e Nyquist
+- Short-Time Fourier Transform (stft):
+    - Analisa sinais que variam com o tempo;
+    - Divide o sinal em pequenos segmentos de tempo (frames) e aplica a Transformada de Fourier à cada um dos segmentos;
+    - Produz um espectrograma.
+  
+- Taxa de Amostragem (sr) e Nyquist:
+  
     Teorema de Nyquist:
     - Para reconstruir um sinal, a taxa de amostragem deve ser pelo menos o dobro da frequência máxima presente no sinal.
-    Ex.: Se sr=44100 Hz, a maior frequência detectável é 22050 Hz.
+    - Ex.: Se sr=44100 Hz, a maior frequência detectável é 22050 Hz.
 
 - Normalização de Frequências:
 
@@ -129,20 +127,23 @@ O códio desta seção:
 
 ### → Camadas da Rede Neural
 
-Uma rede neural é composta por:
+Uma rede neural é composta por: `CAMADA DE ENTRADA + CAMADA OCULTA + CAMADA DE SAÍDA` 
 
-    CAMADA DE ENTRADA + CAMADA OCULTA + CAMADA DE SAÍDA
-
+    
 A camada de entrada representa todos os dados que damos para que o modelo seja trenidado. A seguinte é a camada oculta, que faz o treinamneto. É possível possuir mais de uma camada oculta, dependando da finalidade do usuário. A última camada é a de saída, que nos dá o resultado do treinamento.
 
 A camada oculta da rede neural é composta por outras camadas, como descrito abaixo:
 
-- Conv2D: camada convolucional bidimensional, a principal camada;
-- MaxPooling2D: Camada de pooling, que reduz pela metade (/2) as dimensões da imagem. Ao diminuir a resolução, diminui-se a complexidade computacional e evita overfitting;
-- Flatten: achata a entrada que é matriz multidimensional e o transforma em um vetor de uma única dimensão. Passo necessário antes de adicionar camadas densas;
-- Dense: Camada densa - cada neurônio está conectado a todos os neurônios da camada anterior;
-- Dropout(reguarização): Queima aleatoriamente alguns neurônios durante o treinamento, para também reduzir o overfitting;
-- Input: Define a forma da entrada da rede (número de pixels da imagem e o número de canais de cor).
+
+| Camada Oculta| Função | Descrição |
+|--------|--------|-----------------|
+| `Conv2D` | Camada convolucional bidimensional | A principal camada |
+| `MaxPooling2D` | Reduz pela metade (/2) as dimensões da imagem| Ao diminuir a resolução, diminui-se a complexidade computacional e evita overfitting |
+| `Flatten` | Achata a entrada que é matriz multidimensional e o transforma em um vetor de uma única dimensão|Passo necessário antes de adicionar camadas densas|
+| `Dense` |Cada neurônio está conectado a todos os neurônios da camada anterior |-|
+| `Dropout` | Queima aleatoriamente alguns neurônios durante o treinamento |Reduzir o overfitting |
+| `Input` | Define a forma da entrada da rede |Número de pixels da imagem e o número de canais de cor|
+
 
 
   ![Sem título](https://github.com/user-attachments/assets/4ee69baf-af77-44a8-bea3-e9004dd7fbf4){:width="150px"}
@@ -155,44 +156,6 @@ O KERAS nos permite fazer um classificação de multiclasse.
 No Keras podemos importar uma biblioteca que permite modelar de acordo com o padrão de uma rede neural, o sequential:  pilha linear de camadas, onde cada camada recebe a saída da camada anterior
 
     from tensorflow_keras import Sequential
-
-
-### → Análise de Desempenho do Modelo
-
-#### Métricas de Classificação
-
-#### - Precisão (Precision)
-Mede a proporção de exemplos positivos corretamente classificados entre todos os classificados como positivos.
-
-$\text{Precisão} = \frac{VP}{VP + FP}$
-
-#### - Sensibilidade/Revocação (Recall/Sensitivity)
-Mede a proporção de exemplos positivos corretamente classificados entre todos os que realmente são positivos.
-
-$\text{Sensibilidade} = \frac{VP}{VP + FN}$
-
-#### - F1-Score
-Média harmônica entre Precisão e Sensibilidade:
-            
-$F_1 = 2 \times \frac{\text{Precisão} \times \text{Sensibilidade}}{\text{Precisão} + \text{Sensibilidade}}$
-
-#### - Especificidade
-Mede a proporção de negativos corretamente identificados:
-
-$\text{Especificidade} = \frac{VN}{VN + FP}$
-
-#### Legenda:
-- **VP (Verdadeiros Positivos):** Casos positivos corretamente classificados
-- **VN (Verdadeiros Negativos):** Casos negativos corretamente classificados
-- **FP (Falsos Positivos):** Casos negativos erroneamente classificados como positivos
-- **FN (Falsos Negativos):** Casos positivos erroneamente classificados como negativos
-
-
-#### Métrica: Accuracy
-- Monitora a **porcentagem de previsões corretas** durante o treinamento e validação
-- Fórmula: 
-
-  $\text{Accuracy} = \frac{\text{Previsões Corretas}}{\text{Total de Exemplos}}$
 
 ### → Configuração de Treinamento em Keras
 
@@ -218,6 +181,29 @@ $\text{Especificidade} = \frac{VN}{VN + FP}$
             loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False),
             metrics=['accuracy']
         )
+
+
+
+##  📊 Métricas  
+
+### → Análise de Desempenho do Modelo
+
+#### Métricas de Classificação
+
+| Valor  | Comportamento | Equação |
+|--------|---------------|---------------|
+| `Precision` | Mede a proporção de exemplos positivos corretamente classificados entre todos os classificados como positivos| $\frac{VP}{VP + FP}$|
+| `Recall/Sensitivity` |  Mede a proporção de exemplos positivos corretamente classificados entre todos os que realmente são positivos|$\frac{VP}{VP + FN}$ |
+| `F1-Score` | Média harmônica entre Precisão e Sensibilidade| $2 \times \frac{\text{Precisão} \times \text{Sensibilidade}}{\text{Precisão} + \text{Sensibilidade}}$|
+| `Especificidade`  | Mede a proporção de negativos corretamente identificados: |$\frac{VN}{VN + FP}$ |
+| ` Accuracy` | Monitora a **porcentagem de previsões corretas** durante o treinamento e validação |$\frac{\text{Previsões Corretas}}{\text{Total de Exemplos}}$|
+
+#### Legenda:
+- **VP (Verdadeiros Positivos):** Casos positivos corretamente classificados
+- **VN (Verdadeiros Negativos):** Casos negativos corretamente classificados
+- **FP (Falsos Positivos):** Casos negativos erroneamente classificados como positivos
+- **FN (Falsos Negativos):** Casos positivos erroneamente classificados como negativos
+
 
 ### → Matriz de Confusão
 
