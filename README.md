@@ -156,7 +156,7 @@ A camada oculta da rede neural é composta por outras camadas, como descrito aba
 
 O KERAS nos permite fazer um classificação de multiclasse.
 
-No Keras podemos importar uma biblioteca que permite modelar de acordo com o padrão de uma rede neural, o `sequential`:  pilha linear de camadas, onde cada camada recebe a saída da camada anterior
+No Keras podemos importar uma biblioteca que permite modelar de acordo com o padrão de uma rede neural, o `Sequential`:  pilha linear de camadas, onde cada camada recebe a saída da camada anterior
 ```python
 from tensorflow_keras import Sequential
 ```
