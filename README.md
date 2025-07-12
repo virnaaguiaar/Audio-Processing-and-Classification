@@ -1,6 +1,7 @@
 # Audio Processing and Classification
+---
 
-Este projeto é um sistema completo de processamento e classificação de áudio que também serve como guia educativo sobre o funcionamento de redes neurais convolucionais. ✨
+Este projeto é um sistema completo de processamento e classificação de áudio que também serve como guia educativo sobre o funcionamento de redes neurais convolucionais. 
 
 ## 📋 Visão Geral
 O projeto está organizado em 4 etapas principais:
@@ -8,8 +9,6 @@ O projeto está organizado em 4 etapas principais:
 2. 📊 Geração de espectrogramas
 3. 🧠 Classificação com rede neural
 4. 📈 Análise de métricas
-
----
 
 
 ## 🎙️ Gravação 
@@ -48,12 +47,12 @@ Para salvar o modelo:
 
     modelo = tf.keras.models.load_model('/content/drive/MyDrive/audio2025/audios/modelo.keras')
 
----
+
 ##  📊 Spectograma  
 
 Este código realiza o pré-processamento de áudios e gera espectrogramas. 
 
-#### O que são espectogramas?
+#### 🔍 O que são espectogramas?
 
 São representações visuais de frequências ao longo do tempo, onde:
 
@@ -71,7 +70,7 @@ O código desta seção:
 - Armazena os espectrogramas e seus rótulos em listas para uso futuro.
 
 ### → Filtragem de Sinais (Filtro Passa-Banda)
- #### O que é?
+ #### 🔍 O que é?
 
  Um filtro passa-banda permite a passagem de frequências dentro de uma faixa específica (entre fcorte_inf e fcorte_sup), enquanto atenua frequências fora dessa faixa.
 - Remove ruídos e frequências indesejadas (ex.: 50/60 Hz de interferência elétrica).
@@ -183,7 +182,6 @@ No Keras podemos importar uma biblioteca que permite modelar de acordo com o pad
         )
 
 
-
 ##  📊 Métricas  
 
 ### → Análise de Desempenho do Modelo
@@ -207,12 +205,12 @@ No Keras podemos importar uma biblioteca que permite modelar de acordo com o pad
 
 ### → Matriz de Confusão
 
+#### 🔍 O que é?
+ 
 É uma tabela que compara as previsões do modelo com os valores reais (rótulos verdadeiros). Cada célula mostra quantas vezes uma combinação específica de previsão e valor real ocorreu.
 
 - Diagonal principal: Acertos do modelo.
 - Demais células: Erros (confusões entre classes).
-
-
 
 ![Sem título(1)](https://github.com/user-attachments/assets/73d15459-57a1-4856-8234-40fc84953edb)
 
