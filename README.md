@@ -53,7 +53,7 @@ dado = np.load('/content/drive/MyDrive/audio2025/audios/dados_teste_validacao.np
 modelo = tf.keras.models.load_model('/content/drive/MyDrive/audio2025/audios/modelo.keras')
 ```
 
-##  📊 Spectograma  
+##  📊 Spectrogram
 
 Este código realiza o pré-processamento de áudios e gera espectrogramas. 
 
@@ -127,7 +127,7 @@ O código desta seção:
   - Permite pós-processamento de imagens (redimensionamento, equalização de histograma);
   - Compatível com frameworks de deep learning (ex.: TensorFlow, PyTorch).
 
-##  📊 Classificação  
+##  🧠 Classificação  
 
 ### → Camadas da Rede Neural
 
@@ -187,7 +187,7 @@ model.compile(
 )
 ```
 
-##  📊 Métricas  
+##  📈 Métricas  
 
 ### → Análise de Desempenho do Modelo
 
