@@ -189,7 +189,7 @@ No Keras podemos importar uma biblioteca que permite modelar de acordo com o pad
 | Valor  | Comportamento | Equação |
 |--------|---------------|---------------|
 | `Precision` | Mede a proporção de exemplos positivos corretamente classificados entre todos os classificados como positivos| $\frac{VP}{VP + FP}$|
-| `Recall/Sensitivity` |  Mede a proporção de exemplos positivos corretamente classificados entre todos os que realmente são positivos|$\frac{VP}{VP + FN}$ |
+| `Recall` |  Mede a proporção de exemplos positivos corretamente classificados entre todos os que realmente são positivos|$\frac{VP}{VP + FN}$ |
 | `F1-Score` | Média harmônica entre Precisão e Sensibilidade| $2 \times \frac{\text{Precisão} \times \text{Sensibilidade}}{\text{Precisão} + \text{Sensibilidade}}$|
 | `Especificidade`  | Mede a proporção de negativos corretamente identificados: |$\frac{VN}{VN + FP}$ |
 | ` Accuracy` | Monitora a **porcentagem de previsões corretas** durante o treinamento e validação |$\frac{\text{Previsões Corretas}}{\text{Total de Exemplos}}$|
@@ -214,12 +214,12 @@ No Keras podemos importar uma biblioteca que permite modelar de acordo com o pad
 
 Por que usar?
 
-- Identifica padrões de erro: Quais classes são mais confundidas.
-- Vai além da acurácia: Mostra trade-offs entre FP e FN.
+- Identifica padrões de erro: quais classes são mais confundidas;
+- Vai além da acurácia: mostra trade-offs entre FP e FN;
 - Essencial para classes desbalanceadas.
 
 A partir da matriz, calculamos:
 
-- Acurácia (Accuracy)
-- Precisão (Precision)
-- Recall/Sensibilidade (Recall)
+- Accuracy;
+- Precision;
+- Recall.
