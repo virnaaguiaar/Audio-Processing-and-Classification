@@ -1,5 +1,4 @@
 # Audio Processing and Classification
----
 
 Este projeto é um sistema completo de processamento e classificação de áudio que também serve como guia educativo sobre o funcionamento de redes neurais convolucionais. 
 
