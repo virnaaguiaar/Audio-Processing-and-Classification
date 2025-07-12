@@ -157,13 +157,13 @@ No Keras podemos importar uma biblioteca que permite modelar de acordo com o pad
 ### → Configuração de Treinamento em Keras
 
 #### Otimizador Adam (Adaptive Moment Estimation)
-- Ajusta as taxas de aprendizado individualmente para cada parâmetro da rede neural
-- Combina os benefícios do **momentum** e da **adaptação de taxas de aprendizado**
-- Melhora a eficiência e estabilidade do treinamento
+- Ajusta as taxas de aprendizado individualmente para cada parâmetro da rede neural;
+- Combina os benefícios do **momentum** e da **adaptação de taxas de aprendizado**;
+- Melhora a eficiência e estabilidade do treinamento.
 
 #### Função de Perda: SparseCategoricalCrossentropy
-- Utilizada para problemas de **classificação multiclasse**
-- Versão "esparsa" significa que os labels são fornecidos como **inteiros** (ex: [0, 2, 1]) em vez de **one-hot encoding** (ex: [[1,0,0], [0,0,1], [0,1,0]])
+- Utilizada para problemas de **classificação multiclasse**;
+- Versão "esparsa" significa que os labels são fornecidos como **inteiros** (ex: [0, 2, 1]) em vez de **one-hot encoding** (ex: [[1,0,0], [0,0,1], [0,1,0]]).
 
 ##### Parâmetro `from_logits`:
 | Valor  | Comportamento |
