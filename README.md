@@ -33,14 +33,14 @@ drive.mount('/content/drive')
 Para a pasta de áudios gravados:
 
 ```python
-output_dir = "/content/drive/MyDrive/audio2025/audios/gravados"  
+output_dir = "/content/drive/MyDrive/audio2025/audios/recordings" 
 os.makedirs(output_dir, exist_ok=True)
 ```
 
 
 Para a pasta dos espectogramas gerados através do processamento do áudio:
 ```python
-espectrograma_dir = "/content/drive/MyDrive/audio2025/audios/espectrogramas"
+spectrogram_dir = "/content/drive/MyDrive/audio2025/audios/spectrograms"
 ```
 
 Para salvar o modelo:
