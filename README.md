@@ -128,10 +128,9 @@ O código desta seção:
 Uma rede neural é composta por: `CAMADA DE ENTRADA + CAMADA OCULTA + CAMADA DE SAÍDA` 
 
     
-A camada de entrada representa todos os dados que damos para que o modelo seja trenidado. A seguinte é a camada oculta, que faz o treinamneto. É possível possuir mais de uma camada oculta, dependando da finalidade do usuário. A última camada é a de saída, que nos dá o resultado do treinamento.
+A camada de entrada representa todos os dados que damos para que o modelo seja trenidado. A seguinte é a camada oculta, que faz o treinamneto. É possível possuir mais de uma camada oculta, dependendo da finalidade do usuário. A última camada é a de saída, que nos dá o resultado do treinamento.
 
 A camada oculta da rede neural é composta por outras camadas, como descrito abaixo:
-
 
 | Camada Oculta| Função | Descrição |
 |--------|--------|-----------------|
@@ -144,14 +143,14 @@ A camada oculta da rede neural é composta por outras camadas, como descrito aba
 
 
 
-  ![Sem título](https://github.com/user-attachments/assets/4ee69baf-af77-44a8-bea3-e9004dd7fbf4){:width="150px"}
+  ![Sem título](https://github.com/user-attachments/assets/4ee69baf-af77-44a8-bea3-e9004dd7fbf4)
 
 
 ### → Keras
 
 O KERAS nos permite fazer um classificação de multiclasse.
 
-No Keras podemos importar uma biblioteca que permite modelar de acordo com o padrão de uma rede neural, o sequential:  pilha linear de camadas, onde cada camada recebe a saída da camada anterior
+No Keras podemos importar uma biblioteca que permite modelar de acordo com o padrão de uma rede neural, o `sequential`:  pilha linear de camadas, onde cada camada recebe a saída da camada anterior
 
     from tensorflow_keras import Sequential
 
