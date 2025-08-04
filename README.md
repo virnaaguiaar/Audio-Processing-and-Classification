@@ -1,27 +1,25 @@
 # Audio Processing and Classification
 
-Este projeto é um sistema completo de processamento e classificação de áudio que também serve como guia educativo sobre o funcionamento de redes neurais convolucionais. 
+This project is a complete audio processing and classification system that also serves as an educational guide on how convolutional neural networks work. 
 
-## 📋 Visão Geral
-O projeto está organizado em 4 etapas principais:
-1. 🎙️ Gravação de áudio
-2. 📊 Geração de espectrogramas
-3. 🧠 Classificação com rede neural
-4. 📈 Análise de métricas
+## 📋 Overview
+The project is organized into 4 main stages:
+1. 🎙️ Audio recording
+2. 📊 Spectrogram generation
+3. 🧠 Neural network classification
+4. 📈 Metric analysis
 
+## 🎙️ Recording
 
-## 🎙️ Gravação 
+The code is an audio recording system that:
+- Organizes audio files into categories (such as "left" and "right");
+- Creates a main folder to store the files;
+- Records audio using the browser and converts it to WAV format;
+- Automatically numbers each new recording;
+- Saves files into specific folders for each command;
+- Includes a button to start the recording process.
 
-O código é um sistema de gravação de áudio que:
-- Organiza os áudios em categorias (como "left" e "right");
-- Cria uma pasta principal para armazenar os arquivos;
-- Grava áudio usando o navegador e converte para formato WAV;
-- Numera automaticamente cada nova gravação;
-- Salva os arquivos em pastas específicas para cada comando;
-- Possui um botão para iniciar o processo de gravação.
-
-
-Primeiramente, é necessário criar um mecanismo de gravação de áudio caso você ainda não tenha os arquivos de áudio. Utilizei para esse mecanismo o GoogleColaboratoy que faz a ponte direta com o GoogleDrive para salvar os aquivos em pastas específicas.
+First, you need to create an audio recording mechanism if you don't already have the audio files. For this, I used Google Colaboratory, which connects directly to Google Drive to save the files into specific folders.
 
 ```python
 
@@ -30,7 +28,7 @@ drive.mount('/content/drive')
 
 %cd /content/drive/MyDrive/audio2025/audios
 ```
-Para a pasta de áudios gravados:
+For recorded audio files:
 
 ```python
 output_dir = "/content/drive/MyDrive/audio2025/audios/recordings" 
@@ -38,94 +36,100 @@ os.makedirs(output_dir, exist_ok=True)
 ```
 
 
-Para a pasta dos espectogramas gerados através do processamento do áudio:
+For the spectrograms folder (generated from audio processing):
 ```python
 spectrogram_dir = "/content/drive/MyDrive/audio2025/audios/spectrograms"
 ```
 
-Para salvar o modelo:
+For saving the trained model:
 ```python
 with open('/content/drive/MyDrive/audio2025/audios/model.tflite', 'wb') as f:
   f.write(tflite_model)
 
 dado = np.load('/content/drive/MyDrive/audio2025/audios/dados_teste_validacao.npz')
 
-modelo = tf.keras.models.load_model('/content/drive/MyDrive/audio2025/audios/modelo.keras')
+model = tf.keras.models.load_model('/content/drive/MyDrive/audio2025/audios/modelo.keras')
 ```
 
 ##  📊 Spectrogram
 
-Este código realiza o pré-processamento de áudios e gera espectrogramas. 
+This code performs audio pre-processing and generates spectrograms.
 
-#### 🔍 O que são espectogramas?
+#### 🔍 What are spectrograms?
 
-São representações visuais de frequências ao longo do tempo, onde:
+Spectrograms are visual representations of frequency content over time, where:
 
-- Eixo X: Tempo;
-- Eixo Y: frequência (escala logarítmica);
-- Cores: Intensidade (dB).
+- X-axis: Time
+- Y-axis: Frequency (logarithmic scale)
+- Colors: Intensity (dB)
+
+🛠️ What this code does:
+
+- Google Drive integration:
+    - Mounts Google Drive to access audio files
+- Dependencies:
+    - Installs and imports required libraries (librosa, OpenCV, matplotlib, scipy)
+- Audio processing:
+    - Applies bandpass filter (100 Hz to 10,000 Hz) to isolate target frequencies and remove noise
+    - Automatically trims silence from beginning/end of audio clips
+- Spectrogram conversion:
+    - Converts filtered audio to spectrogram images
+    - Saves spectrograms in category-specific folders (e.g., "left", "right")
+    - Stores spectrograms and their labels in arrays for model training
 
 
-O código desta seção:
-- Monta o Google Drive para acessar arquivos;
-- Instala e importa bibliotecas necessárias (librosa, OpenCV, matplotlib, scipy);
-- Aplica um filtro passa-banda para isolar frequências entre 100 Hz e 10.000 Hz, removendo ruídos indesejados, usados também para remover silêncios do início e fim do áudio;
-- Converte o áudio em espectrogramas;
-- Salva os espectrogramas em pastas separadas pelas categoria desejadas;
-- Armazena os espectrogramas e seus rótulos em listas para uso futuro.
+### → Signal Filtering (Bandpass Filter)
+ #### 🔍 What is it?
 
-### → Filtragem de Sinais (Filtro Passa-Banda)
- #### 🔍 O que é?
+ A bandpass filter allows frequencies within a specific range (between low_cut and high_cut) to pass through, while attenuating frequencies outside this range:
+- Removes noise and unwanted frequencies (e.g., 50/60 Hz electrical interference)
+- Enhances audio quality before spectral analysis
 
- Um filtro passa-banda permite a passagem de frequências dentro de uma faixa específica (entre fcorte_inf e fcorte_sup), enquanto atenua frequências fora dessa faixa.
-- Remove ruídos e frequências indesejadas (ex.: 50/60 Hz de interferência elétrica).
-- Melhora a qualidade do áudio antes da análise espectral.
+#### How does it work in the code?
 
-#### Como funciona no código?
-
-|Parâmetros| Função | 
+|Parameter| Function | 
 |--------|--------|
-|`butter()`| Projeta um filtro Butterworth (resposta suave na banda de passagem) |
-|`butter()` → `order=5` | Quanto maior a ordem, mais "íngreme" é a filtragem |
-|`butter()` → `btype='band'` | Define um filtro passa-banda|
-| `butter()` → `inf_normalz, sup_normalz` |Frequências normalizadas para evitar aliasing|
-| `filtfilt()` |Aplica o filtro duas vezes (ida e volta) para evitar atraso de fase (distorção temporal)|
+|`butter()`| Designs a Butterworth filter (maximally flat frequency response in passband) |
+|`butter()` → `order=5` | Higher order = steeper roll-off (more aggressive filtering) |
+|`butter()` → `btype='band'` | Specifies bandpass filter type |
+| `butter()` → `inf_normalz, sup_normalz` | Normalized frequencies (prevents aliasing) |
+| `filtfilt()` | Zero-phase filtering (applies filter forward+backward to eliminate phase delay) |
    
 
-### → Pré-Processamento de Áudio (Librosa)
- #### Operações principais:
+### → Audio Preprocessing (Librosa)
+ #### Core Operations:
 
-|Parâmetros| Função | Saída | Motivação |
+|Parameter| Purpose | Output | Motivation |
 |--------|--------|--------|--------|
-|`librosa.stft()`| Divide o sinal em pequenos segmentos e calcula a Transformada de Fourier para cada um| Matriz complexa representando magnitudes e fases em diferentes frequências ao longo do tempo| |
-|`librosa.amplitude_to_db()` |Converte amplitudes em decibéis (dB) (escala logarítmica) | |O ouvido humano percebe sons em escala logarítmica; Melhora o contraste em espectrogramas|
+|`librosa.stft()`| Splits signal into short segments and computes Fourier Transform for each| Complex matrix representing magnitude and phase across frequencies over time| Time-frequency decomposition for spectral analysis|
+|`librosa.amplitude_to_db()` |	Converts amplitudes to decibel (dB) scale logarithmic | dB-scaled spectrogram|Human hearing perceives sound logarithmically; Enhances spectrogram contrast|
 
-### → Tópicos Extra
+### → Additional Topics
 
-- Short-Time Fourier Transform (stft):
-    - Analisa sinais que variam com o tempo;
-    - Divide o sinal em pequenos segmentos de tempo (frames) e aplica a Transformada de Fourier à cada um dos segmentos;
-    - Produz um espectrograma.
+- **Short-Time Fourier Transform (stft):**
+    - Analyzes time-varying signals
+    - Splits signal into short time segments (frames) and applies Fourier Transform to each segment
+    - Produces a spectrogram (time-frequency representation)
   
-- Taxa de Amostragem (sr) e Nyquist:
+- **Sampling Rate (sr) and Nyquist Theorem:**
   
-    Teorema de Nyquist:
-    - Para reconstruir um sinal, a taxa de amostragem deve ser pelo menos o dobro da frequência máxima presente no sinal.
-    - Ex.: Se sr=44100 Hz, a maior frequência detectável é 22050 Hz.
+    Nyquist Theorem:
+    - Sampling rate must be ≥ 2 × maximum signal frequency
+    - Ex.: For sr=44100 Hz, the max detectable frequancy is 22050 Hz
 
-- Normalização de Frequências:
+- **Frequency Normalization:**
 
-    Antes de aplicar o filtro, as frequências são normalizadas pela frequência de Nyquist para evitar distorções no filtro digital.
+    Before applying the filter, frequencies are normalized by the Nyquist frequency to prevent distortion in digital filtering.
 
-- Pré-requisito para Machine Learning:
+- **Machine Learning Prerequisites:**
   
-    - Dados devem estar em formato numérico (imagens como arrays)
-    - Rótulos devem ser codificados (ex.: 0, 1)
+    - Data must be in numerical format (e.g., images as NumPy arrays)
+    - Labels must be encoded (e.g., `0`, `1`) 
 
-- Leitura com OpenCV (cv2.imread()):
-  - Converte a imagem em um array NumPy para processamento posterior (ex.: redes neurais);
-  - Permite pós-processamento de imagens (redimensionamento, equalização de histograma);
-  - Compatível com frameworks de deep learning (ex.: TensorFlow, PyTorch).
+- **Reading with OpenCV (`cv2.imread()`):**
+  - Converts an image into a NumPy array for further processing (e.g., neural networks)  
+  - Enables post-processing such as resizing or histogram equalization  
+  - Compatible with deep learning frameworks (e.g., TensorFlow, PyTorch)  
 
 ##  🧠 Classificação  
 
